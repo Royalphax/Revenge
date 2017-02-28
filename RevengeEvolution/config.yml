@@ -5,7 +5,7 @@
 
 #Enable melee mode and set the desired radius
 #If enabled, when an animal starts his aggro on a player
-#all entities in radius will attack the player (Skeletons, Zombies,... too).
+#all entities in radius will attack the player (Skeletons, Zombies,... too)
 melee-mode:
   enable: false
   radius: 20.0
