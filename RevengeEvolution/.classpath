@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.11_R1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.7.2-R1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/[FREE]PvPManager.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.7.5-R2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.7.9_R3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.7.10_R4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.8.3_R2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.8_R1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.8_R3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.9.2_R1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.9.4_R2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Therence/Desktop/eclipse/Build Path/Spigot/spigot-1.10.2_R1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
