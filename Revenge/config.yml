@@ -5,13 +5,13 @@
 
 #Enable melee mode and set the desired radius
 #If enabled, when an animal starts his aggro on a player
-#all entities in radius will attack the player (Skeletons, Zombies,... too)
+#all entities in radius will attack the player (Skeletons, Zombies,... too).
 melee-mode:
   enable: false
   radius: 20.0
   
-#Particle to show when a mob fight a player
-#Put 'null' to show no particles
+#Particle to show when a mob fight a player.
+#Put 'null' to show no particles.
 #You have a list of all particles in particles.txt
 #To customize more the particle which will be used, you can follow this pattern:
 #hit-particles: '[ParticleName];[Count];[Speed];[fx];[fy];[fz];[VarInt...]'
@@ -147,7 +147,7 @@ moblist:
     stop-blocks: 20
     death-message: '%PLAYER% was killed by %NAME%'
   WOLF:
-    enable: true
+    enable: false
     name: 'Wolf'
     speed: 1.0
     damage: 2.0
