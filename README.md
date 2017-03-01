@@ -10,5 +10,3 @@ Revenge is a light weight plugin which allows animals (or pacific mobs in genera
 * Multi-version
 * Edit speed/damage/death message for each entity
 * Funny and Free!
-
-# ⚠ Source code isn't available right now ⚠
