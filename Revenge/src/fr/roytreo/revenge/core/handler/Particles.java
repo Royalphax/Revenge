@@ -46,7 +46,12 @@ public enum Particles {
 	BLOCK_DUST("blockdust_", 38, 1), 
 	WATER_DROP("droplet", 39), 
 	ITEM_TAKE("take", 40), 
-	MOB_APPEARANCE("mobappearance",	41);
+	MOB_APPEARANCE("mobappearance",	41),
+	DRAGON_BREATH("dragonbreath", 42),
+	END_ROD("endrod", 43),
+	DAMAGE_INDICATOR("damageindicator",	44),
+	SWEEP_ATTACK("sweepattack",	45),
+	FALLING_DUST("fallingdust",	46);
 
 	private final String particleName;
 	private final int particleId;
@@ -73,6 +78,17 @@ public enum Particles {
 	public int getOptionalParametersSize() {
 		return this.optionalParamSize;
 	}
+	
+	public static Particles getParticleByName(String name) {
+		try {
+			return valueOf(name);
+		} catch (IllegalArgumentException ex) {
+			for (Particles particle : values())
+				if (particle.getName().equalsIgnoreCase(name))
+					return particle;
+		}
+		return null;
+	}
 
 	public static class RevengeParticle {
 
@@ -96,9 +112,11 @@ public enum Particles {
 			asRGBParticle = false;
 			asItemCrackParticle = false;
 			asBlockCrackBlockDustParticle = false;
+			
+			String type = "Basic particle";
 			try {
 				String[] particleSplitted = input.split(";");
-				hitParticle = Particles.valueOf(particleSplitted[0]);
+				hitParticle = getParticleByName(particleSplitted[0]);
 				if (particleSplitted.length >= 2) {
 					particleCount = Integer.parseInt(particleSplitted[1]);
 				}
@@ -117,6 +135,9 @@ public enum Particles {
 
 				if (hitParticle == Particles.ITEM_CRACK && particleSplitted.length >= 8) {
 					asItemCrackParticle = true;
+					particleArg1 = Integer.parseInt(particleSplitted[6]);
+					particleArg2 = Integer.parseInt(particleSplitted[7]);
+					type = "ItemCrack particle";
 				} else if ((hitParticle == Particles.BLOCK_CRACK || hitParticle == Particles.BLOCK_DUST)
 						&& particleSplitted.length >= 8) {
 					asBlockCrackBlockDustParticle = true;
@@ -126,25 +147,24 @@ public enum Particles {
 					} else if (hitParticle == Particles.BLOCK_DUST) {
 						particleArg1 = Integer.parseInt(particleSplitted[6]);
 					}
+					type = "BlockCrack/Dust particle";
 				} else if ((hitParticle == Particles.REDSTONE || hitParticle == Particles.SPELL_MOB
 						|| hitParticle == Particles.SPELL_MOB_AMBIENT || hitParticle == Particles.SPELL
 						|| hitParticle == Particles.SPELL_INSTANT) && particleSplitted.length >= 9) {
 					particleArg1 = Integer.parseInt(particleSplitted[6]);
 					particleArg2 = Integer.parseInt(particleSplitted[7]);
 					particleArg3 = Integer.parseInt(particleSplitted[8]);
+					type = "Colored particle";
 				}
 			} catch (Exception ex) {
+				ex.printStackTrace();
 				instance.getLogger().info("[DON'T WORRY] Particle error: " + ex.getMessage());
 			}
 			instance.getLogger()
 					.info("Particle set ! / Name: " + hitParticle.toString() + " / Count: " + particleCount
-							+ " / Speed: " + particleSpeed + " / Fx: " + particleFx + " / Fy: " + particleFy + " / Fz: "
+							+ " / Speed: " + particleSpeed + " / dX: " + particleFx + " / dY: " + particleFy + " / dZ: "
 							+ particleFz + " / Arg1: " + particleArg1 + " / Arg2: " + particleArg2 + " / Arg3: "
-							+ particleArg3 + " / type: "
-							+ (asRGBParticle ? "Colored particle"
-									: (!asItemCrackParticle && !asBlockCrackBlockDustParticle ? "Basic particle" : ""))
-							+ (asItemCrackParticle ? "ItemCrack particle" : "")
-							+ (asBlockCrackBlockDustParticle ? "BlockCrack/Dust particle" : ""));
+							+ particleArg3 + " / type: " + type);
 
 		}
 
