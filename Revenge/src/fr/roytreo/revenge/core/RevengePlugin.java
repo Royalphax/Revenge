@@ -18,7 +18,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -80,15 +79,11 @@ public class RevengePlugin extends JavaPlugin {
 		}
 		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class);
 		
-		if (!(new File(getDataFolder(), "Particles.txt").exists()))
-			this.saveResource("Particles.txt", false);
-		
 		setupSoftDepend("PvPManager");
-
 		setupConfig(true);
 		
-		for (Player online : Bukkit.getOnlinePlayers())
-			for (Entity ent : online.getNearbyEntities(10.0D, 10.0D, 10.0D))
+		for (World world : Bukkit.getWorlds())
+			for (Entity ent : world.getEntities())
 				if (ent instanceof ArmorStand && ent.hasMetadata(this.revengeTrackedInfoMetadata))
 					ent.remove();
 					
