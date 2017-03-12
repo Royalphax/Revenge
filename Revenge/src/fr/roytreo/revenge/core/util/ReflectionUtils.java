@@ -64,8 +64,7 @@ public final class ReflectionUtils {
 			}
 			return constructor;
 		}
-		throw new NoSuchMethodException(
-				"There is no such constructor in this class with the specified parameter types");
+		throw new NoSuchMethodException("There is no such constructor in this class with the specified parameter types");
 	}
 
 	/**
@@ -191,8 +190,7 @@ public final class ReflectionUtils {
 			}
 			return method;
 		}
-		throw new NoSuchMethodException(
-				"There is no such method in this class with the specified name and parameter types");
+		throw new NoSuchMethodException("There is no such method in this class with the specified name and parameter types");
 	}
 
 	/**
@@ -217,8 +215,8 @@ public final class ReflectionUtils {
 	 * @see #getClass(String, PackageType)
 	 * @see #getMethod(Class, String, Class...)
 	 */
-	public static Method getMethod(String className, PackageType packageType, String methodName,
-			Class<?>... parameterTypes) throws NoSuchMethodException, ClassNotFoundException {
+	public static Method getMethod(String className, PackageType packageType, String methodName, Class<?>... parameterTypes)
+			throws NoSuchMethodException, ClassNotFoundException {
 		return getMethod(packageType.getClass(className), methodName, parameterTypes);
 	}
 
@@ -317,9 +315,9 @@ public final class ReflectionUtils {
 	 * @see #getClass(String, PackageType)
 	 * @see #invokeMethod(Object, Class, String, Object...)
 	 */
-	public static Object invokeMethod(Object instance, String className, PackageType packageType, String methodName,
-			Object... arguments) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, ClassNotFoundException {
+	public static Object invokeMethod(Object instance, String className, PackageType packageType, String methodName, Object... arguments)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+			ClassNotFoundException {
 		return invokeMethod(instance, packageType.getClass(className), methodName, arguments);
 	}
 
@@ -425,9 +423,9 @@ public final class ReflectionUtils {
 	 *             package cannot be found
 	 * @see #getValue(Object, Class, boolean, String)
 	 */
-	public static Object getValue(Object instance, String className, PackageType packageType, boolean declared,
-			String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException,
-			SecurityException, ClassNotFoundException {
+	public static Object getValue(Object instance, String className, PackageType packageType, boolean declared, String fieldName)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException,
+			ClassNotFoundException {
 		return getValue(instance, packageType.getClass(className), declared, fieldName);
 	}
 
@@ -516,9 +514,9 @@ public final class ReflectionUtils {
 	 *             package cannot be found
 	 * @see #setValue(Object, Class, boolean, String, Object)
 	 */
-	public static void setValue(Object instance, String className, PackageType packageType, boolean declared,
-			String fieldName, Object value) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, ClassNotFoundException {
+	public static void setValue(Object instance, String className, PackageType packageType, boolean declared, String fieldName, Object value)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException,
+			ClassNotFoundException {
 		setValue(instance, packageType.getClass(className), declared, fieldName, value);
 	}
 
@@ -559,34 +557,29 @@ public final class ReflectionUtils {
 	 * @since 1.0
 	 */
 	public enum PackageType {
-		MINECRAFT_SERVER("net.minecraft.server." + getServerVersion()), CRAFTBUKKIT("org.bukkit.craftbukkit."
-				+ getServerVersion()), BUKKIT("org.bukkit"), BUKKIT_SCOREBOARD(BUKKIT, "scoreboard"), BUKKIT_INVENTORY(
-						BUKKIT, "inventory"), CRAFTBUKKIT_BLOCK(CRAFTBUKKIT, "block"), CRAFTBUKKIT_CHUNKIO(CRAFTBUKKIT,
-								"chunkio"), CRAFTBUKKIT_COMMAND(CRAFTBUKKIT, "command"), CRAFTBUKKIT_CONVERSATIONS(
-										CRAFTBUKKIT, "conversations"), CRAFTBUKKIT_ENCHANTMENS(CRAFTBUKKIT,
-												"enchantments"), CRAFTBUKKIT_ENTITY(CRAFTBUKKIT,
-														"entity"), CRAFTBUKKIT_EVENT(CRAFTBUKKIT,
-																"event"), CRAFTBUKKIT_GENERATOR(CRAFTBUKKIT,
-																		"generator"), CRAFTBUKKIT_HELP(CRAFTBUKKIT,
-																				"help"), CRAFTBUKKIT_INVENTORY(
-																						CRAFTBUKKIT,
-																						"inventory"), CRAFTBUKKIT_MAP(
-																								CRAFTBUKKIT,
-																								"map"), CRAFTBUKKIT_METADATA(
-																										CRAFTBUKKIT,
-																										"metadata"), CRAFTBUKKIT_POTION(
-																												CRAFTBUKKIT,
-																												"potion"), CRAFTBUKKIT_PROJECTILES(
-																														CRAFTBUKKIT,
-																														"projectiles"), CRAFTBUKKIT_SCHEDULER(
-																																CRAFTBUKKIT,
-																																"scheduler"), CRAFTBUKKIT_SCOREBOARD(
-																																		CRAFTBUKKIT,
-																																		"scoreboard"), CRAFTBUKKIT_UPDATER(
-																																				CRAFTBUKKIT,
-																																				"updater"), CRAFTBUKKIT_UTIL(
-																																						CRAFTBUKKIT,
-																																						"util");
+		MINECRAFT_SERVER("net.minecraft.server." + getServerVersion()),
+		CRAFTBUKKIT("org.bukkit.craftbukkit." + getServerVersion()),
+		BUKKIT("org.bukkit"),
+		BUKKIT_SCOREBOARD(BUKKIT, "scoreboard"),
+		BUKKIT_INVENTORY(BUKKIT, "inventory"),
+		CRAFTBUKKIT_BLOCK(CRAFTBUKKIT, "block"),
+		CRAFTBUKKIT_CHUNKIO(CRAFTBUKKIT, "chunkio"),
+		CRAFTBUKKIT_COMMAND(CRAFTBUKKIT, "command"),
+		CRAFTBUKKIT_CONVERSATIONS(CRAFTBUKKIT, "conversations"),
+		CRAFTBUKKIT_ENCHANTMENS(CRAFTBUKKIT, "enchantments"),
+		CRAFTBUKKIT_ENTITY(CRAFTBUKKIT, "entity"),
+		CRAFTBUKKIT_EVENT(CRAFTBUKKIT, "event"),
+		CRAFTBUKKIT_GENERATOR(CRAFTBUKKIT, "generator"),
+		CRAFTBUKKIT_HELP(CRAFTBUKKIT, "help"),
+		CRAFTBUKKIT_INVENTORY(CRAFTBUKKIT, "inventory"),
+		CRAFTBUKKIT_MAP(CRAFTBUKKIT, "map"),
+		CRAFTBUKKIT_METADATA(CRAFTBUKKIT, "metadata"),
+		CRAFTBUKKIT_POTION(CRAFTBUKKIT, "potion"),
+		CRAFTBUKKIT_PROJECTILES(CRAFTBUKKIT, "projectiles"),
+		CRAFTBUKKIT_SCHEDULER(CRAFTBUKKIT, "scheduler"),
+		CRAFTBUKKIT_SCOREBOARD(CRAFTBUKKIT, "scoreboard"),
+		CRAFTBUKKIT_UPDATER(CRAFTBUKKIT, "updater"),
+		CRAFTBUKKIT_UTIL(CRAFTBUKKIT, "util");
 
 		private final String path;
 
@@ -661,9 +654,14 @@ public final class ReflectionUtils {
 	 * @since 1.0
 	 */
 	public enum DataType {
-		BYTE(byte.class, Byte.class), SHORT(short.class, Short.class), INTEGER(int.class, Integer.class), LONG(
-				long.class, Long.class), CHARACTER(char.class, Character.class), FLOAT(float.class,
-						Float.class), DOUBLE(double.class, Double.class), BOOLEAN(boolean.class, Boolean.class);
+		BYTE(byte.class, Byte.class),
+		SHORT(short.class, Short.class),
+		INTEGER(int.class, Integer.class),
+		LONG(long.class, Long.class),
+		CHARACTER(char.class, Character.class),
+		FLOAT(float.class, Float.class),
+		DOUBLE(double.class, Double.class),
+		BOOLEAN(boolean.class, Boolean.class);
 
 		private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<Class<?>, DataType>();
 		private final Class<?> primitive;
