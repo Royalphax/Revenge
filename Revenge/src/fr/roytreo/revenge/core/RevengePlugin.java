@@ -1,13 +1,8 @@
 package fr.roytreo.revenge.core;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,13 +51,12 @@ public class RevengePlugin extends JavaPlugin {
 	public HashMap<String, Object> softDepends;
 	public Particles.RevengeParticle revengeParticle;
 	public static RevengePlugin instance;
-	public static final String uid = "%%__USER__%%";
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void onEnable() {
 		instance = this;
-		this.localhost = true;
+		this.localhost = false;
 		this.update = false;
 		this.lastDamagerMetadata = "revengeLastDamager";
 		this.revengeMobMetadata = "revengeMob";
@@ -91,12 +85,11 @@ public class RevengePlugin extends JavaPlugin {
 		{
 			public void run()
 			{
-				if (!URLManager.checkVersion(getDescription().getVersion(), localhost, URLManager.Values.REVENGE_PATH))
-				{
+				if (!URLManager.checkVersion(getDescription().getVersion(), false, URLManager.Values.GITHUB_PATH)) {
 					getLogger().warning("A new version more efficient of the plugin is available. Do '/rev update' to automatically update the plugin.");
 					update = true;
 				}
-				new DataRegister(instance, localhost);
+				new DataRegister(instance, localhost, false);
 			}
 		}.runTaskAsynchronously(this);
 	}
@@ -140,7 +133,7 @@ public class RevengePlugin extends JavaPlugin {
 							{
 								public void run()
 								{
-									if (URLManager.update(instance, URLManager.getLatestVersion(), sender, localhost, URLManager.Values.REVENGE_PATH)) {
+									if (URLManager.update(instance, URLManager.getLatestVersion(), false, URLManager.Values.GITHUB_PATH))
 										new BukkitRunnable()
 										{
 											public void run()
@@ -150,7 +143,6 @@ public class RevengePlugin extends JavaPlugin {
 												Bukkit.getServer().shutdown();
 											}
 										}.runTaskLater(instance, 20*5);
-									}
 								}
 							}.runTaskLater(this, 20*10);
 						} else {
@@ -173,7 +165,7 @@ public class RevengePlugin extends JavaPlugin {
 	{
 		File configFile = new File(getDataFolder(), "config.yml");
 		if (!configFile.exists()) {
-			this.getLogger().info("Thanks " + getUsernameById(uid) + " for having downloaded Revenge ! If you find any bugs, feel free to contact the developer.");
+			this.getLogger().info("Thank you for having downloaded Revenge ! If you find any bugs, feel free to contact the developer.");
 			this.saveDefaultConfig();
 		}
 		if (!onStart) this.reloadConfig();
@@ -248,31 +240,6 @@ public class RevengePlugin extends JavaPlugin {
 		}
 		
 		return (IParticleSpawner != null && IPathEntity != null);
-	}
-	
-	public String getUsernameById(String uid) {
-		try {
-			Integer userid = Integer.parseInt(uid);
-			try {
-				URL url = new URL("https://www.spigotmc.org/members/" + userid);
-				URLConnection connection = url.openConnection();
-				connection.setRequestProperty("User-Agent",
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36");
-				BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String code = "", line = "";
-				while ((line = br.readLine()) != null) {
-					code = code + line;
-				}
-				
-				return code.split("<title>")[1].split("</title>")[0].split(" | ")[0];
-				
-			} catch (IOException e) {
-				this.getLogger().severe(e.getMessage());
-				return "";
-			}
-		} catch (NumberFormatException ex) {
-			return "Robot";
-		}
 	}
 	
 	public Boolean setupSoftDepend(String softDepend)
