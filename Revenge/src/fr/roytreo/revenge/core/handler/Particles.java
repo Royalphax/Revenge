@@ -1,5 +1,7 @@
 package fr.roytreo.revenge.core.handler;
 
+import java.util.Random;
+
 import org.bukkit.Location;
 
 import fr.roytreo.revenge.core.RevengePlugin;
@@ -149,8 +151,8 @@ public enum Particles {
 					}
 					type = "BlockCrack/Dust particle";
 				} else if ((hitParticle == Particles.REDSTONE || hitParticle == Particles.SPELL_MOB
-						|| hitParticle == Particles.SPELL_MOB_AMBIENT || hitParticle == Particles.SPELL
-						|| hitParticle == Particles.SPELL_INSTANT) && particleSplitted.length >= 9) {
+						|| hitParticle == Particles.SPELL_MOB_AMBIENT || hitParticle == Particles.NOTE) && particleSplitted.length >= 9) {
+					asRGBParticle = true;
 					particleArg1 = Integer.parseInt(particleSplitted[6]);
 					particleArg2 = Integer.parseInt(particleSplitted[7]);
 					particleArg3 = Integer.parseInt(particleSplitted[8]);
@@ -170,23 +172,40 @@ public enum Particles {
 
 		public void playParticles(Location location) {
 			location = location.add(0, 1, 0);
+			Random rand = new Random();
+			Float randX = rand.nextFloat() * particleFx;
+			if (rand.nextBoolean()) 
+				randX = -randX;
+			Float randY = rand.nextFloat() * particleFy;
+			if (rand.nextBoolean()) 
+				randY = -randY;
+			Float randZ = rand.nextFloat() * particleFz;
+			if (rand.nextBoolean()) 
+				randZ = -randZ;
+			location.add(randX, randY, randZ);
 			if (asRGBParticle) {
-				this.instance.IParticleSpawner.playParticles(hitParticle, location, particleFx, particleFy, particleFz,
-						particleCount, particleSpeed, particleArg1, particleArg2, particleArg3);
+				for (int i = 0; i < particleCount; i++)
+					this.instance.IParticleSpawner.playParticles(hitParticle, location, (float) color(particleArg1), (float) color(particleArg2), (float) color(particleArg3), 
+							0, (float) 1.0, new int[0]);
 			} else if (asItemCrackParticle) {
-				this.instance.IParticleSpawner.playParticles(hitParticle, location, particleFx, particleFy, particleFz,
+				this.instance.IParticleSpawner.playParticles(hitParticle, location, 0F, 0F, 0F,
 						particleCount, particleSpeed, particleArg1, particleArg2);
 			} else if (asBlockCrackBlockDustParticle) {
-				this.instance.IParticleSpawner.playParticles(hitParticle, location, particleFx, particleFy, particleFz,
+				this.instance.IParticleSpawner.playParticles(hitParticle, location, 0F, 0F, 0F,
 						particleCount, particleSpeed, particleArg1);
 			} else {
-				this.instance.IParticleSpawner.playParticles(hitParticle, location, particleFx, particleFy, particleFz,
+				this.instance.IParticleSpawner.playParticles(hitParticle, location, 0F, 0F, 0F,
 						particleCount, particleSpeed);
 			}
 		}
 
 		public void playBloodParticles(Location location) {
 			this.instance.IParticleSpawner.playParticles(Particles.BLOCK_CRACK, location, 0.0f, 0.0f, 0.0f, 1, 0.1f, 152);
+		}
+		
+		private double color(double color) {
+			color = color <= 0.0D ? 1.0D : color;
+			return color / 255.0D;
 		}
 	}
 }
