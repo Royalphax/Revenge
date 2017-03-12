@@ -1,5 +1,5 @@
 name: Revenge
-version: 5.2
+version: 6.0
 author: Asynchronous
 softdepend: [PvPManager]
 main: fr.roytreo.revenge.core.RevengePlugin
