@@ -1,111 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Smart tool to help people to select a particle in Revenge.">
-        <meta name="author" content="Roytreo28">
-        <link rel="icon" href="../assets/img/icon.png">
-        <title>Revenge particles selector � by Roytreo28</title>
-        <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- Custom styles for this template -->
-        <link href="theme.css" rel="stylesheet">
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <div class="container">
-            <div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModalLabel">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="configModalLabel">Copy the following output and replace the actual field 'hit-particles' by it.</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="config" onclick="selectText('config');">
-                                hit-particles: "<span id="particles-string-config"></span>"
-                            </div>
-                        </div>
-                    </div>
-                </div>
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Smart tool to help people to select a particle in Revenge.">
+      <meta name="author" content="Roytreo28">
+      <link rel="icon" href="../assets/img/icon.png">
+      <title>Revenge particles selector — by Roytreo28</title>
+      <!-- Bootstrap core CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <!-- Custom styles for this template -->
+      <link href="theme.css" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+   </head>
+   <body>
+      <div class="container">
+         <div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModalLabel">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title" id="configModalLabel"></h4>
+                  </div>
+                  <div class="modal-body">
+                     <div id="config" onclick="selectText('config');">
+                        <pre>hit-particles: "<span id="particle-string-config"></span>"</pre>
+                     </div>
+                     <small>Single click on the box and its content will be automatically selected.</small>
+                  </div>
+               </div>
             </div>
-            <div class="header clearfix">
-                <nav>
-                    <ul class="nav nav-pills pull-right">
-                        <li role="presentation"><a href="https://github.com/Roytreo28/Revenge/tree/master/docs/particle-selector">View on Github</a></li>
-                    </ul>
-                </nav>
-                <h3 class="text-muted">Revenge <small>particles selector</small></h3>
-            </div>
-			<h1>This web page isn't functional at the moment. Please come again later.</h1>
-            <div class="well">
-                <p>Hi Guest! Just fill the following fields and click on generate to automatically generate the desired particle string to put in the revenge's config.</p>
-                <br/>
-            </div>
-            <hr/>
+         </div>
+         <div class="header clearfix">
+            <nav>
+               <ul class="nav nav-pills pull-right">
+                  <li role="presentation"><a href="https://github.com/Roytreo28/Revenge/tree/master/docs/particle-selector">View on Github</a></li>
+               </ul>
+            </nav>
+            <h3 class="text-muted">Revenge <small>particle selector</small></h3>
+         </div>
+         <div class="well">
+            <p><b>Hi Guest!</b> Just fill the following fields and click on « <b>generate</b> » to automatically get the desired particle string to put in the revenge's config.</p>
+            <p><span class="glyphicon glyphicon-flash"></span> Have a look at this <a href="http://minecraft.gamepedia.com/Particles" target="_blank">wiki page</a> if you're a little bit lost among all of these particle names.</p>
+         </div>
+         <div id="enable-hit-particles" class="form-group">
+            <label><u>Enable hit particles</u> — <small>Do you want to enable the particles shown when a player is hit by an animal ?</small></label>   
+            <label for="enable-hit-particles-yes" class="radio-inline"><input type="radio" name="enable-hit-particles" id="enable-hit-particles-yes" onclick="toggleVisibility(true, 'hit-particles-settings');" checked>Yes</label>
+            <label for="enable-hit-particles-no" class="radio-inline"><input type="radio" name="enable-hit-particles" id="enable-hit-particles-no" onclick="toggleVisibility(false, 'hit-particles-settings');">No</label>
+         </div>
+         <div id="hit-particles-settings">
             <div class="form-group">
-                <label for="announce-prefix"><u>Announce prefix</u> � <small>Do you want to set a default prefix for all announcements ? If yes, then, write it.</small></label>
-                <input type="text" class="form-control" id="announce-prefix">
+               <label for="particle-name"><u>Particle name</u> — <small>Which particle do you want to use ?</small></label>
+               <select class="form-control" id="particle-name" onclick="refreshSelectedParticle(this);">
+                  <option>explode</option>
+                  <option>largeexplode</option>
+                  <option>hugeexplosion</option>
+                  <option>fireworksSpark</option>
+                  <option>bubble</option>
+                  <option>splash</option>
+                  <option>wake</option>
+                  <option>suspended</option>
+                  <option>depthsuspend</option>
+                  <option>crit</option>
+                  <option>magicCrit</option>
+                  <option>smoke</option>
+                  <option>largesmoke</option>
+                  <option>spell</option>
+                  <option>instantSpell</option>
+                  <option>mobSpell</option>
+                  <option>mobSpellAmbient</option>
+                  <option>witchMagic</option>
+                  <option>dripWater</option>
+                  <option>dripLava</option>
+                  <option>angryVillager</option>
+                  <option>happyVillager</option>
+                  <option>townaura</option>
+                  <option>note</option>
+                  <option>portal</option>
+                  <option>enchantmenttable</option>
+                  <option>flame</option>
+                  <option>lava</option>
+                  <option>footstep</option>
+                  <option>reddust</option>
+                  <option>snowballpoof</option>
+                  <option>slime</option>
+                  <option>heart</option>
+                  <option>barrier</option>
+                  <option>cloud</option>
+                  <option>snowshovel</option>
+                  <option>droplet</option>
+                  <option>mobappearance</option>
+                  <option>iconcrack</option>
+                  <option>blockcrack</option>
+                  <option>blockdust</option>
+                  <option>endRod (1.9+)</option>
+                  <option>dragonbreath (1.9+)</option>
+                  <option>damageIndicator (1.9+)</option>
+                  <option>sweepAttack (1.9+)</option>
+                  <option>fallingdust (1.9+)</option>
+                  <option>spit (1.11+)</option>
+                  <option>totem (1.11+)</option>
+               </select>
             </div>
             <div class="form-group">
-                <label for="title-prefix"><u>Title prefix</u> � <small>Do you want to set a default prefix for all titles ? If yes, then, write it.</small></label>
-                <input type="text" class="form-control" id="title-prefix">
+               <label for="particle-count"><u>Particle count</u> — <small>How many particles do you want to spawn on every hit ?</small></label>
+               <input type="text" class="form-control" id="particle-count" value="1">
             </div>
             <div class="form-group">
-                <label for="subtitle-prefix"><u>Subtitle prefix</u> � <small>Do you want to set a default prefix for all subtitles ? If yes, then, write it.</small></label>
-                <input type="text" class="form-control" id="subtitle-prefix">
+               <label for="particle-speed"><u>Particle speed</u> — <small>Which speed to set to the particle ? (<code>0.1</code> is recommended)</small></label>
+               <input type="text" class="form-control" id="particle-speed" value="0.1">
             </div>
             <div class="form-group">
-                <label for="action-prefix"><u>Action prefix</u> � <small>Do you want to set a default prefix for all action announcements ? If yes, then, write it.</small></label>
-                <input type="text" class="form-control" id="action-prefix">
+               <label for="particle-distance"><u>Particle distance</u> — <small>Syntax: <code>distanceX,distanceY,distanceZ</code></small></label>
+               <p>This option is pretty cool! It allows you to not only spawn the particle at the player position.<br/>Here are two examples:
+               <ul>
+                  <li>If we put <code>1,0,0</code>, the particle will be able to spawn at a distance of 1 block of the player on the x axis.</li>
+                  <li>If we put <code>1,1,1</code>, the particle will be able to appear anywhere in an invisible cube, centered on the player.</li>
+               </ul>
+               </p>
+               <input type="text" class="form-control" id="particle-distance" value="0,0,0">
             </div>
-            <div class="form-group">
-                <label for="warn-prefix"><u>Warn prefix</u> � <small>Do you want to set a default prefix for all warn announcements ? If yes, then, write it.</small></label>
-                <input type="text" class="form-control" placeholder="&f[&4&lWARN&f] &b" id="warn-prefix">
+            <h3>Additional settings <small>depends on which particle you choose</small></h3>
+            <div id="additional-settings">
+               <div id="additional-settings-1">
+                  <div class="form-group">
+                     <label for="particle-speed"><u>Particle id/data</u> — <small>Which block do you want the particle to looks like ?</small></label>
+                     <p>Have a look at <a href="http://minecraft.gamepedia.com/Data_values#Block_IDs" target="_blank">here</a> to know which id represent which block. Syntax: <code>id:data</code></p>
+                     <input type="text" class="form-control" id="particle-id-data" placeholder="95:14 (= red glass block)">
+                  </div>
+               </div>
+               <div id="additional-settings-2">
+                  <div class="form-group">
+                     <label for="particle-speed"><u>Particle id</u> — <small>Which block do you want the particle to looks like ?</small></label>
+                     <p>Have a look at <a href="http://minecraft.gamepedia.com/Data_values#Block_IDs" target="_blank">here</a> to know which id represent which block. Syntax: <code>id</code></p>
+                     <input type="text" class="form-control" id="particle-id" placeholder="95 (= glass block)">
+                  </div>
+               </div>
+               <div id="additional-settings-3">
+                  <div class="form-group">
+                     <label for="particle-speed"><u>Particle RGB</u> — <small>Edit the RGB properties of the particle.</small></label>
+                     <p>Syntax: <code>redValue,greenValue,blueValue</code> each value are between 0 and 255. It is used to color particles.<br/>Any help available <a href="http://www.rapidtables.com/web/color/RGB_Color.htm" target="_blank">here</a>.</p>
+                     <input type="text" class="form-control" id="particle-rgb" placeholder="255,0,0 (= red)">
+                  </div>
+               </div>
             </div>
-            <hr/>
-            <button id="generateButton" type="button" class="btn btn-primary btn-lg btn-block" onClick="generateConfig();" data-toggle="modal" data-target="#configModal">Generate configuration <b><span id="status"></span></b></button><br/>
-            <footer class="footer">
-                Created by <b><a href="https://github.com/Roytreo28" target="_blank">Roytreo28</a></b> with Bootstrap.
-                <div class="pull-right">Follow me on <b><a href="https://twitter.com/asynchronousVM" target="_blank">Twitter</a></b></div>
-            </footer>
-        </div>
-        <!-- /container -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script>
-		    function generateConfig()
-			{
-			    
-			}
-            
-            function showError(error) {
-                document.getElementById("configModalLabel").innerHTML = "<span class='glyphicon glyphicon-alert'></span> " + error + " Close this dialog, fix your error and retry to generate.";
-            }
-            
-            function selectText(containerid) {
-                document.getElementById("status").innerHTML = "";
-                if (document.selection) {
-                    var range = document.body.createTextRange();
-                    range.moveToElementText(document.getElementById(containerid));
-                    range.select();
-                } else if (window.getSelection) {
-                    var range = document.createRange();
-                    range.selectNode(document.getElementById(containerid));
-                    window.getSelection().addRange(range);
-                }
-            }
-            
-            $('#configModal').on('shown.bs.modal', function () {
-                $('#generateButton').focus()
-            })
-                  
-        </script>
-    </body>
+         </div>
+         <hr/>
+         <p align="center"><span class="glyphicon glyphicon-exclamation-sign"></span> If you use this generator, be sure you followed syntax rules before reporting me a bug.</p>
+         <button id="generateButton" type="button" class="btn btn-primary btn-lg btn-block" onClick="generateConfig();" data-toggle="modal" data-target="#configModal">Generate string <b><span id="status"></span></b></button><br/>
+         <footer class="footer">
+            Created by <b><a href="https://github.com/Roytreo28" target="_blank">Roytreo28</a></b> with Bootstrap.
+            <div class="pull-right">Follow me on <b><a href="https://twitter.com/asynchronousVM" target="_blank">Twitter</a></b></div>
+         </footer>
+      </div>
+      <!-- /container -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script>
+         var enableHitParticles = true;
+         var lastParticle = "explode";
+         var additionalSettings = 0;
+         
+         for (var i = 1; i < 4; i++)
+          toggleVisibility(false, "additional-settings-" + i);
+         
+         function generateConfig() {
+          document.getElementById("configModalLabel").innerHTML = "Copy the following output and replace the actual field <code>'hit-particles'</code> in your « <span id='file-path' onclick='selectText('file-path');'><b>plugins/Revenge/config.yml</b></span> » file by it.";
+          var particleName = (document.getElementById("particle-name").value).split(" ")[0];
+          var particleCount = document.getElementById("particle-count").value;
+          if (isNaN(particleCount)) {
+              showError("Field particle count isn't a valid number.");
+              return;
+          }
+          var particleSpeed = document.getElementById("particle-speed").value;
+          if (isNaN(particleSpeed)) {
+              showError("Field particle speed isn't a valid number.");
+              return;
+          }
+          var particleDistance = (document.getElementById("particle-distance").value).replace(/,/g, ";");
+          if (particleDistance.trim() == "" || particleDistance.split(";").length != 3) {
+              showError("You made a mistake in your syntax at the particle distance field.");
+              return;
+          }
+          var particleInt = "";
+          if (particleName == "iconcrack" || particleName == "blockcrack") {
+              var particleIDData = document.getElementById("particle-id-data").value;
+              particleInt = ";" + particleIDData.replace(":", ";");
+          } else if (particleName == "blockdust") {
+              var particleID = document.getElementById("particle-id").value;
+              particleInt = ";" + particleID;
+          } else if (particleName == "reddust" || particleName == "mobSpell" || particleName == "mobSpellAmbient" || particleName == "note") {
+              var rgbValue = document.getElementById("particle-rgb").value;
+              particleInt = ";" + rgbValue.replace(/,/g, ";");
+          }
+          document.getElementById("particle-string-config").innerHTML = particleName + ";" + particleCount + ";" + particleSpeed + ";" + particleDistance + particleInt;
+         
+         }
+         
+         function toggleVisibility(bool, id) {
+          var elem = document.getElementById(id);
+          if (bool && elem.style.display != "") {
+              elem.style.display = "";
+          } else if (!bool && elem.style.display != "none") {
+              elem.style.display = "none";
+          }
+         }
+         
+         function refreshSelectedParticle(elem) {
+          var value = elem.value;
+          var disableElem = document.getElementById("particle-speed");
+          if (value != lastParticle) {
+              disableElem.readOnly = false;
+              if (value == "iconcrack" || value == "blockcrack") {
+                  additionalSettings = 1;
+              } else if (value == "blockdust") {
+                  additionalSettings = 2;
+              } else if (value == "reddust" || value == "mobSpell" || value == "mobSpellAmbient" || value == "note") {
+                  additionalSettings = 3;
+                  disableElem.readOnly = true;
+              } else {
+                  additionalSettings = 0;
+                  for (var i = 1; i < 4; i++)
+                      toggleVisibility(false, "additional-settings-" + i);
+                  return;
+              }
+              for (var i = 1; i < 4; i++) {
+                  if (additionalSettings == i) {
+                      toggleVisibility(true, "additional-settings-" + i);
+                  } else {
+                      toggleVisibility(false, "additional-settings-" + i);
+                  }
+              }
+          }
+         }
+         
+         function showError(error) {
+          document.getElementById("configModalLabel").innerHTML = "<span class='glyphicon glyphicon-alert'></span> " + error + " Close this dialog, fix your error and retry to generate.";
+         }
+         
+         function selectText(containerid) {
+          document.getElementById("status").innerHTML = "";
+          if (document.selection) {
+              var range = document.body.createTextRange();
+              range.moveToElementText(document.getElementById(containerid));
+              range.select();
+          } else if (window.getSelection) {
+              var range = document.createRange();
+              range.selectNode(document.getElementById(containerid));
+              window.getSelection().addRange(range);
+          }
+         }
+         
+         $('#configModal').on('shown.bs.modal', function () {
+          $('#generateButton').focus()
+         })      
+              
+      </script>
+   </body>
 </html>
