@@ -10,11 +10,11 @@ import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 
-import fr.roytreo.revenge.core.RevengePlugin;
-import net.md_5.bungee.api.ChatColor;
-
+/**
+ * @author Roytreo28
+ */
 public class URLManager {
 
 	private URL url;
@@ -25,12 +25,9 @@ public class URLManager {
 	}
 
 	public enum Values {
-		BASE_URL("roytreo28.ddns.net"), 
-		SHEEPWARS_PATH("SheepWars_Released"), 
-		BUNGEE_ANNOUNCE_PATH("Bungee_Announce"), 
-		NIGHT_CLUB_PATH("Night_Club"), 
-		SONAR_HEARING_PATH("Sonar_Hearing"), 
-		REVENGE_PATH("Revenge");
+		BASE_URL("roytreo28.ddns.net"),
+		GITHUB_PATH("https://roytreo28.github.io/Revenge/auto-updater"),
+		BUNGEE_ANNOUNCE_PATH("http://roytreo28.ddns.net/home/projects/plugins/Revenge");
 
 		private String[] values;
 
@@ -72,23 +69,22 @@ public class URLManager {
 		return body;
 	}
 
-	public boolean download(RevengePlugin plugin, String newVersion, CommandSender sender) {
-		sender.sendMessage(ChatColor.YELLOW + "Updating " + plugin.getDescription().getName() + " ...");
+	public boolean download(Plugin plugin, String newVersion) {
+		plugin.getLogger().info("Updating " + plugin.getDescription().getName() + " ...");
 		FileOutputStream fos = null;
 		try {
 			ReadableByteChannel rbc = Channels.newChannel(this.url.openStream());
 			fos = new FileOutputStream("plugins/" + plugin.getDescription().getName() + "-" + newVersion + ".jar");
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		} catch (IOException e) {
-			sender.sendMessage(ChatColor.RED + "Update aborted: " + e.getMessage());
-			return false;
+			plugin.getLogger().warning("Update aborted: " + e.getMessage());
 		} finally {
 			try {
 				fos.close();
-				sender.sendMessage(ChatColor.GREEN + plugin.getDescription().getName() + " is now up to date. Server will shutdown in 5 seconds.");
+				plugin.getLogger().info(plugin.getDescription().getName() + " is now up-to-date.");
 				return true;
 			} catch (NullPointerException | IOException e) {
-				sender.sendMessage(ChatColor.RED + "Update aborted: " + e.getMessage());
+				plugin.getLogger().warning("Update aborted: " + e.getMessage());
 			}
 		}
 		return false;
@@ -98,10 +94,9 @@ public class URLManager {
 		Boolean isUpdated = true;
 		String content;
 		try {
-			content = new URLManager("http://%BASE_URL%/home/projects/plugins/" + URLPath.getValue() + "/version.txt",
-					localhost).read();
-			if (!content.equals(version)) {
-				latestVersion = content;
+			content = new URLManager(URLPath.getValue() + "/version.txt", localhost).read();
+			if (!content.trim().equals(version.trim())) {
+				latestVersion = content.trim();
 				isUpdated = false;
 			}
 		} catch (IOException e) {
@@ -114,13 +109,12 @@ public class URLManager {
 		return latestVersion;
 	}
 
-	public static boolean update(RevengePlugin plugin, String newVersion, CommandSender sender, Boolean localhost,
-			Values URLPath) {
+	public static boolean update(Plugin plugin, String newVersion, Boolean localhost, Values URLPath) {
 		try {
-			return new URLManager("http://%BASE_URL%/home/projects/plugins/" + URLPath.getValue() + "/latest.jar", localhost).download(plugin, newVersion, sender);
+			return new URLManager(URLPath.getValue() + "/latest.jar", localhost).download(plugin, newVersion.trim());
 		} catch (MalformedURLException e) {
-			sender.sendMessage(ChatColor.RED + "Update aborted: " + e.getMessage());
-			return false;
+			plugin.getLogger().warning("Update aborted: " + e.getMessage());
 		}
+		return false;
 	}
 }
