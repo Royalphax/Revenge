@@ -12,11 +12,7 @@ melee-mode:
   
 #Particle to show when a mob fight a player.
 #Put 'null' to show no particles.
-#You have a list of all particles in particles.txt
-#To customize more the particle which will be used, you can follow this pattern:
-#hit-particles: '[ParticleName];[Count];[Speed];[fx];[fy];[fz];[VarInt...]'
-#You're not obligated to fill all the fields '[]'. But to specify the speed of the particle, you will need to specify the count first.
-#To spawn particles as blood, use this: 'BLOCK_CRACK;3;0.1;0.5;0.3;0.5;152;0'.
+#Go here to customize particles: https://roytreo28.github.io/Revenge/particle-selector/
 hit-particles: 'CRIT;3;0.1;0.5;0.3;0.5;0'
 
 tracked-info:
