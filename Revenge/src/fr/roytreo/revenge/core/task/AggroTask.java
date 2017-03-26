@@ -82,6 +82,8 @@ public class AggroTask extends BukkitRunnable {
 			this.stopTicks += 1;
 		if (this.instance.randomBehavior)
 			this.walkUpdateLimitTicks += 1;
+		if (this.instance.angryMood)
+			this.instance.IPathEntity.playAnimation(this.killer, 1);
 		if (this.instance.animalsBlood && this.bloodTicks > 0) {
 			this.bloodTicks -= 1;
 			this.instance.revengeParticle.playBloodParticles(((LivingEntity) this.killer).getEyeLocation());
