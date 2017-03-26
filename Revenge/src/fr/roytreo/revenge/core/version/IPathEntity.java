@@ -9,4 +9,6 @@ public interface IPathEntity {
 	public void damage(Entity ent, Entity damager, float damage);
 	
 	public void setGravity(Entity ent, boolean bool);
+	
+	public void playAnimation(Entity ent, int animation);
 }

@@ -2,13 +2,16 @@ package fr.roytreo.revenge.v1_7_R2;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R2.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import fr.roytreo.revenge.core.version.IPathEntity;
 import net.minecraft.server.v1_7_R2.DamageSource;
 import net.minecraft.server.v1_7_R2.EntityInsentient;
 import net.minecraft.server.v1_7_R2.EntityLiving;
 import net.minecraft.server.v1_7_R2.NBTTagCompound;
+import net.minecraft.server.v1_7_R2.PacketPlayOutAnimation;
 
 public class PathEntity implements IPathEntity {
 
@@ -37,5 +40,15 @@ public class PathEntity implements IPathEntity {
         nmsEntity.c(tag);
         EntityLiving el = (EntityLiving) nmsEntity;
         el.f(tag);
+	}
+	
+	@Override
+	public void playAnimation(Entity ent, int animation) {
+		PacketPlayOutAnimation packet = new PacketPlayOutAnimation(((CraftEntity) ent).getHandle(), animation);
+		for (Player p : ent.getWorld().getPlayers()) {
+			if ((p.isOnline()) && (p instanceof CraftPlayer)) {
+				((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+			}
+		}
 	}
 }
