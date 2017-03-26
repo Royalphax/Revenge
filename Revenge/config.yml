@@ -17,7 +17,7 @@ hit-particles: 'CRIT;3;0.1;0.5;0.3;0.5;0'
 
 tracked-info:
   #If enabled, the head of the player aggro by the animal will be displayed above it.
-  enable: true
+  enable: false
   #Description is the message displayed above the head.
   description: "&bI want to kill %PLAYER%"
 
@@ -26,6 +26,9 @@ random-behavior: true
 
 #Allows animals to bleed.
 animals-blood: false
+
+#Allows animals to looks like a bit more angry.
+angry-mood: true
 
 #Disable worlds
 disable-worlds:

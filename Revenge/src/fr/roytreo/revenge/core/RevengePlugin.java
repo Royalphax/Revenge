@@ -43,6 +43,7 @@ public class RevengePlugin extends JavaPlugin {
 	public Boolean trackedInfoEnabled;
 	public Boolean randomBehavior;
 	public Boolean animalsBlood;
+	public Boolean angryMood;
 	public String trackedDescription;
 	public String lastDamagerMetadata;
 	public String revengeMobMetadata;
@@ -175,6 +176,7 @@ public class RevengePlugin extends JavaPlugin {
 		this.trackedDescription = ChatColor.translateAlternateColorCodes('&', getConfig().getString("tracked-info.description"));
 		this.randomBehavior = getConfig().getBoolean("random-behavior");
 		this.animalsBlood = getConfig().getBoolean("animals-blood");
+		this.angryMood = getConfig().getBoolean("angry-mood");
 
         setupParticle();
 		setupDisableWorlds();
