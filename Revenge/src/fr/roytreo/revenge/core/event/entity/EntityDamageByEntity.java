@@ -2,9 +2,11 @@ package fr.roytreo.revenge.core.event.entity;
 
 import java.util.Random;
 
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -27,9 +29,19 @@ public class EntityDamageByEntity extends EventListener {
 		if (this.plugin.disableWorlds.contains(att.getLocation().getWorld()))
 			return;
 		if (def.hasMetadata("NPC") || def.hasMetadata("shopkeeper")) return;
-		if ((att instanceof Player) && ev.getDamage() > 0) {
-			Player p = (Player) att;
-			if (!(def instanceof Player)) {
+		if ((att instanceof Player || att instanceof Arrow) && ev.getDamage() > 0) {
+			Player p = null;
+			if (att instanceof Player)
+				p = (Player) att;
+			if (att instanceof Arrow) {
+				LivingEntity livingEnt = ((Arrow) att).getShooter();
+				if (livingEnt instanceof Player) {
+					p = (Player) livingEnt;
+				} else {
+					return;
+				}
+			}
+			if (!(def instanceof Player) && p != null) {
 				if (Mob.isRegistred(def.getType()))
 				{
 					Mob mob = Mob.getMob(def.getType());
