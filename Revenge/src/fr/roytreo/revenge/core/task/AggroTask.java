@@ -17,7 +17,7 @@ import org.bukkit.util.Vector;
 import fr.roytreo.revenge.core.RevengePlugin;
 import fr.roytreo.revenge.core.handler.Mob;
 import fr.roytreo.revenge.core.handler.Particles;
-import fr.roytreo.revenge.core.softdepend.PvPManager;
+import fr.roytreo.revenge.core.softdepend.base.SoftDepend.Getter;
 import fr.roytreo.revenge.core.util.MathUtils;
 
 public class AggroTask extends BukkitRunnable {
@@ -49,13 +49,13 @@ public class AggroTask extends BukkitRunnable {
 		this.enableParticles = instance.revengeParticle != null;
 		this.instance = instance;
 		if ((instance.softDepends.containsKey("PvPManager")) && (victim instanceof Player))
-			if (!((PvPManager) instance.softDepends.get("PvPManager")).hasPvPEnabled((Player) victim))
+			if (!instance.getSoftDepend("PvPManager").get(Getter.BOOLEAN_PLAYER_HAS_PVP_ENABLED, victim))
 				return;
 		this.killer.setMetadata(this.instance.revengeMobMetadata, new FixedMetadataValue(this.instance, true));
 		if (instance.trackedInfoEnabled) {
 			this.trackedInfo = this.killer.getWorld().spawn(MathUtils.getLeftBackSide(this.killer.getLocation(), 1.5D), ArmorStand.class);
 			this.trackedInfo.setVisible(false);
-			this.instance.IPathEntity.setGravity(this.trackedInfo, false);
+			this.instance.INMSUtils.setGravity(this.trackedInfo, false);
 			this.trackedInfo.setCustomNameVisible(false);
 			this.trackedInfo.setMetadata(instance.revengeTrackedInfoMetadata, new FixedMetadataValue(instance, true));
 			String trackedInfoDescription = instance.trackedDescription;
@@ -83,7 +83,7 @@ public class AggroTask extends BukkitRunnable {
 		if (this.instance.randomBehavior)
 			this.walkUpdateLimitTicks += 1;
 		if (this.instance.angryMood)
-			this.instance.IPathEntity.playAnimation(this.killer, 1);
+			this.instance.INMSUtils.playAnimation(this.killer, 1);
 		if (this.instance.animalsBlood && this.bloodTicks > 0) {
 			this.bloodTicks -= 1;
 			this.instance.revengeParticle.playBloodParticles(((LivingEntity) this.killer).getEyeLocation());
@@ -125,7 +125,7 @@ public class AggroTask extends BukkitRunnable {
 	private void damage() {
 		this.victim.setMetadata(this.instance.lastDamagerMetadata,
 				new FixedMetadataValue(this.instance, this.mob.getEntity().name()));
-		this.instance.IPathEntity.damage(this.victim, this.killer, this.mob.getDamage());
+		this.instance.INMSUtils.damage(this.victim, this.killer, this.mob.getDamage());
 		if (enableParticles)
 			this.instance.revengeParticle.playParticles(this.victim.getLocation());
 		if (this.countIntervalTicks)
@@ -137,7 +137,7 @@ public class AggroTask extends BukkitRunnable {
 		if (this.instance.trackedInfoEnabled)
 			this.trackedInfo.remove();
 		this.killer.removeMetadata(this.instance.revengeMobMetadata, this.instance);
-		this.instance.IPathEntity.walkTo(this.killer, this.killer.getLocation(), this.mob.getSpeed());
+		this.instance.INMSUtils.walkTo(this.killer, this.killer.getLocation(), this.mob.getSpeed());
 		if (this.mob.getList().contains(this)) {
 			this.mob.getList().remove(this);
 		}
@@ -170,7 +170,7 @@ public class AggroTask extends BukkitRunnable {
 			}
 		}
 		this.lastAskedLocation = location;
-		this.instance.IPathEntity.walkTo(this.killer, location, speed);
+		this.instance.INMSUtils.walkTo(this.killer, location, speed);
 	}
 
 	public Entity getKiller() {

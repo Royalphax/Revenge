@@ -18,7 +18,7 @@ public class PlayerDeath extends EventListener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent ev) {
 		Player p = ev.getEntity();
-		if (p.hasMetadata(plugin.lastDamagerMetadata))
+		if (p.hasMetadata(plugin.lastDamagerMetadata) && !this.plugin.softDepends.containsKey("DeathMessagesPrime"))
 		{
 			for (MetadataValue value : p.getMetadata(plugin.lastDamagerMetadata))
 			{
