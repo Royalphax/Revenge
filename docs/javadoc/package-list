@@ -4,6 +4,7 @@ fr.roytreo.revenge.core.event.entity
 fr.roytreo.revenge.core.event.player
 fr.roytreo.revenge.core.handler
 fr.roytreo.revenge.core.softdepend
+fr.roytreo.revenge.core.softdepend.base
 fr.roytreo.revenge.core.task
 fr.roytreo.revenge.core.util
 fr.roytreo.revenge.core.version
