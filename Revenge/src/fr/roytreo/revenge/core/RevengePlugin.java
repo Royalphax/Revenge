@@ -27,15 +27,16 @@ import fr.roytreo.revenge.core.event.player.PlayerJoin;
 import fr.roytreo.revenge.core.handler.Mob;
 import fr.roytreo.revenge.core.handler.Particles;
 import fr.roytreo.revenge.core.handler.URLManager;
+import fr.roytreo.revenge.core.softdepend.base.SoftDepend;
 import fr.roytreo.revenge.core.stats.DataRegister;
 import fr.roytreo.revenge.core.util.ReflectionUtils;
+import fr.roytreo.revenge.core.version.INMSUtils;
 import fr.roytreo.revenge.core.version.IParticleSpawner;
-import fr.roytreo.revenge.core.version.IPathEntity;
 import net.md_5.bungee.api.ChatColor;
 
 public class RevengePlugin extends JavaPlugin {
 	public IParticleSpawner IParticleSpawner;
-	public IPathEntity IPathEntity;
+	public INMSUtils INMSUtils;
 	public Boolean meleeModeEnabled;
 	public Double radius;
 	public Boolean update;
@@ -49,7 +50,7 @@ public class RevengePlugin extends JavaPlugin {
 	public String revengeMobMetadata;
 	public String revengeTrackedInfoMetadata;
 	public ArrayList<World> disableWorlds;
-	public HashMap<String, Object> softDepends;
+	public HashMap<String, SoftDepend> softDepends;
 	public Particles.RevengeParticle revengeParticle;
 	public static RevengePlugin instance;
 	
@@ -74,7 +75,8 @@ public class RevengePlugin extends JavaPlugin {
 		}
 		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class);
 		
-		setupSoftDepend("PvPManager");
+		setupSoftDepend("PvPManager", "");
+		setupSoftDepend("DeathMessagesPrime", "NOTE: Management of death messages was disabled.");
 		setupConfig(true);
 		
 		for (World world : Bukkit.getWorlds())
@@ -234,29 +236,32 @@ public class RevengePlugin extends JavaPlugin {
 		
 		try {
 			IParticleSpawner = (IParticleSpawner) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".ParticleSpawner"));
-			IPathEntity = (IPathEntity) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".PathEntity"));
+			INMSUtils = (INMSUtils) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".NMSUtils"));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | ClassNotFoundException e) {
 			getLogger().warning(e.getMessage());
 			return false;
 		}
 		
-		return (IParticleSpawner != null && IPathEntity != null);
+		return (IParticleSpawner != null && INMSUtils != null);
 	}
 	
-	public Boolean setupSoftDepend(String softDepend)
+	public Boolean setupSoftDepend(String softDepend, String comments)
 	{
 		try {
 			Plugin plugin = Bukkit.getPluginManager().getPlugin(softDepend);
 			if (plugin == null) return false;
-			softDepends.put(softDepend, ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge.core.softdepend." + softDepend)));
+			softDepends.put(softDepend, (SoftDepend) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge.core.softdepend." + softDepend)));
+			getLogger().info(softDepend + " hooked!");
+			if (!comments.trim().equals(""))
+				getLogger().info(comments);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
 	
-	public Object getSoftDepend(String softDepend)
+	public SoftDepend getSoftDepend(String softDepend)
 	{
 		return this.softDepends.get(softDepend);
 	}
