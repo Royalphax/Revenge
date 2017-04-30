@@ -1,25 +1,25 @@
-package fr.roytreo.revenge.v1_11_R1;
+package fr.roytreo.revenge.v1_10_R1;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import fr.roytreo.revenge.core.version.IPathEntity;
-import net.minecraft.server.v1_11_R1.DamageSource;
-import net.minecraft.server.v1_11_R1.EntityInsentient;
-import net.minecraft.server.v1_11_R1.EntityLiving;
-import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.PacketPlayOutAnimation;
+import fr.roytreo.revenge.core.version.INMSUtils;
+import net.minecraft.server.v1_10_R1.DamageSource;
+import net.minecraft.server.v1_10_R1.EntityInsentient;
+import net.minecraft.server.v1_10_R1.EntityLiving;
+import net.minecraft.server.v1_10_R1.NBTTagCompound;
+import net.minecraft.server.v1_10_R1.PacketPlayOutAnimation;
 
-public class PathEntity implements IPathEntity {
+public class NMSUtils implements INMSUtils {
 
 	@Override
 	public void walkTo(Entity entity, Location location, Double aggroSpeed) {
 		Object pObject = ((CraftEntity) entity).getHandle();
 
-		net.minecraft.server.v1_11_R1.PathEntity path = ((EntityInsentient) pObject).getNavigation().a(location.getX(),
+		net.minecraft.server.v1_10_R1.PathEntity path = ((EntityInsentient) pObject).getNavigation().a(location.getX(),
 				location.getY(), location.getZ());
 		if (path != null) {
 			((EntityInsentient) pObject).getNavigation().a(path, 2.0D);
@@ -32,17 +32,17 @@ public class PathEntity implements IPathEntity {
 		((CraftEntity) ent).getHandle()
 				.damageEntity(DamageSource.mobAttack((EntityLiving) ((CraftEntity) damager).getHandle()), damage);
 	}
-	
+
 	@Override
 	public void setGravity(Entity ent, boolean bool) {
-		net.minecraft.server.v1_11_R1.Entity nmsEntity = ((CraftEntity) ent).getHandle();
+		net.minecraft.server.v1_10_R1.Entity nmsEntity = ((CraftEntity) ent).getHandle();
 		NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("NoGravity", !bool);
-        nmsEntity.c(tag);
-        EntityLiving el = (EntityLiving) nmsEntity;
-        el.f(tag);
+		tag.setBoolean("NoGravity", !bool);
+		nmsEntity.c(tag);
+		EntityLiving el = (EntityLiving) nmsEntity;
+		el.f(tag);
 	}
-
+	
 	@Override
 	public void playAnimation(Entity ent, int animation) {
 		PacketPlayOutAnimation packet = new PacketPlayOutAnimation(((CraftEntity) ent).getHandle(), animation);
