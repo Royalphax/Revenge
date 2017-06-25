@@ -33,9 +33,7 @@ public class AggroTask extends BukkitRunnable {
 	private ArmorStand trackedInfo;
 
 	public AggroTask(Entity ent, Mob m, Entity victim, RevengePlugin instance) {
-		if (m == null)
-			return;
-		if (ent == victim)
+		if (m == null || ent == victim || Mob.getAggroTask(ent) != null) //<!> Bug de dupplication de task
 			return;
 		this.killer = ent;
 		this.mob = m;
@@ -72,6 +70,7 @@ public class AggroTask extends BukkitRunnable {
 			this.trackedInfo.setCustomNameVisible(true);
 		}
 		m.getList().add(this);
+		instance.IParticleSpawner.playParticles(Particles.VILLAGER_ANGRY, ent.getLocation().add(0, 1, 0), 0.0F, 0.0F, 0.0F, 1, 0.1F);
 		runTaskTimer(instance, 0L, 0L);
 	}
 

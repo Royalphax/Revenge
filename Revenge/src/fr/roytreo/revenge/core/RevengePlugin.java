@@ -24,6 +24,7 @@ import fr.roytreo.revenge.core.event.player.PlayerDamage;
 import fr.roytreo.revenge.core.event.player.PlayerDeath;
 import fr.roytreo.revenge.core.event.player.PlayerInteractAtEntity;
 import fr.roytreo.revenge.core.event.player.PlayerJoin;
+import fr.roytreo.revenge.core.event.player.PlayerMove;
 import fr.roytreo.revenge.core.handler.Mob;
 import fr.roytreo.revenge.core.handler.Particles;
 import fr.roytreo.revenge.core.handler.URLManager;
@@ -38,17 +39,19 @@ public class RevengePlugin extends JavaPlugin {
 	public IParticleSpawner IParticleSpawner;
 	public INMSUtils INMSUtils;
 	public Boolean meleeModeEnabled;
-	public Double radius;
 	public Boolean update;
 	public Boolean localhost;
 	public Boolean trackedInfoEnabled;
 	public Boolean randomBehavior;
 	public Boolean animalsBlood;
 	public Boolean angryMood;
+	public Boolean globalRevenge;
 	public String trackedDescription;
 	public String lastDamagerMetadata;
 	public String revengeMobMetadata;
 	public String revengeTrackedInfoMetadata;
+	public Double meleeModeRadius;
+	public Double globalRevengeRadius;
 	public ArrayList<World> disableWorlds;
 	public HashMap<String, SoftDepend> softDepends;
 	public Particles.RevengeParticle revengeParticle;
@@ -73,7 +76,7 @@ public class RevengePlugin extends JavaPlugin {
 			this.getPluginLoader().disablePlugin(this);
 			return;
 		}
-		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class);
+		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class, PlayerMove.class);
 		
 		setupSoftDepend("PvPManager", "");
 		setupSoftDepend("DeathMessagesPrime", "NOTE: Management of death messages was disabled.");
@@ -172,13 +175,15 @@ public class RevengePlugin extends JavaPlugin {
 			this.saveDefaultConfig();
 		}
 		if (!onStart) this.reloadConfig();
-		this.radius = getConfig().getDouble("melee-mode.radius");
+		this.meleeModeRadius = getConfig().getDouble("melee-mode.radius");
 		this.meleeModeEnabled = getConfig().getBoolean("melee-mode.enable");
 		this.trackedInfoEnabled = getConfig().getBoolean("tracked-info.enable");
 		this.trackedDescription = ChatColor.translateAlternateColorCodes('&', getConfig().getString("tracked-info.description"));
 		this.randomBehavior = getConfig().getBoolean("random-behavior");
 		this.animalsBlood = getConfig().getBoolean("animals-blood");
 		this.angryMood = getConfig().getBoolean("angry-mood");
+		this.globalRevenge = getConfig().getBoolean("global-revenge.enable");
+		this.globalRevengeRadius = getConfig().getDouble("global-revenge.radius");
 
         setupParticle();
 		setupDisableWorlds();

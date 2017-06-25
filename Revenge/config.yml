@@ -30,6 +30,13 @@ animals-blood: false
 #Allows animals to looks like a bit more angry.
 angry-mood: true
 
+#Enable or not the mob aggro without provocation.
+# -> if true, each mob will attack a player if he is at a distance lower than the radius value.
+# <!> This option can need a lot of RAM.
+global-revenge:
+  enable: false
+  radius: 20.0
+
 #Disable worlds
 disable-worlds:
   - 'example'
