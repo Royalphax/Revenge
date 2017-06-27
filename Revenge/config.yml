@@ -63,7 +63,7 @@ moblist:
     #Stop aggro if player is how many blocks far away the mob ? (put 0 to disable this feature)
     stop-blocks: 20
     #Death message when the player is killed by this mob
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   CHICKEN:
     enable: true
     name: 'Chicken'
@@ -74,7 +74,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   COW:
     enable: true
     name: 'Cow'
@@ -85,7 +85,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   MUSHROOM_COW:
     enable: true
     name: 'Mushroom Cow'
@@ -96,7 +96,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   PIG:
     enable: true
     name: 'Pig'
@@ -107,7 +107,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   SHEEP:
     enable: true
     name: 'Sheep'
@@ -118,7 +118,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   SQUID:
     enable: true
     name: 'Squid'
@@ -129,7 +129,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   HORSE:
     enable: true
     name: 'Horse'
@@ -140,7 +140,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   VILLAGER:
     enable: true
     name: 'Villager'
@@ -151,7 +151,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   WOLF:
     enable: false
     name: 'Wolf'
@@ -162,7 +162,7 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
+    death-message: '%PLAYER% was killed by a %NAME%'
   OCELOT:
     enable: true
     name: 'Little Kitty'
@@ -173,10 +173,9 @@ moblist:
     percent: 50
     stop-time: 60
     stop-blocks: 20
-    death-message: '%PLAYER% was killed by %NAME%'
-#Enable Rabbit and Polar Bears if you server is in 1.8 or higher for Rabbit
-#and in 1.10 or higher for Polar Bears. To tell to the plugin to take account
-#of them, remove '#' before each attributes.
+    death-message: '%PLAYER% was killed by a %NAME%'
+#Enable Rabbit if you server is in 1.8 or higher.
+#To tell to the plugin to take account of it, remove '#' before each attributes.
 #If you have any issue, please contact the developer.
 #  RABBIT:
 #    enable: true
@@ -188,7 +187,10 @@ moblist:
 #    percent: 50
 #    stop-time: 60
 #    stop-blocks: 20
-#    death-message: '%PLAYER% was killed by %NAME%'
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#Enable Polar Bear if you server is in 1.10 or higher.
+#To tell to the plugin to take account of it, remove '#' before each attributes.
+#If you have any issue, please contact the developer.
 #  POLAR_BEAR:
 #    enable: true
 #    name: 'Polar Bear'
@@ -199,4 +201,32 @@ moblist:
 #    percent: 50
 #    stop-time: 60
 #    stop-blocks: 20
-#    death-message: '%PLAYER% was killed by %NAME%'
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#Enable Lama if you server is in 1.11 or higher.
+#To tell to the plugin to take account of it, remove '#' before each attributes.
+#If you have any issue, please contact the developer.
+#  LLAMA:
+#    enable: true
+#    name: 'Lama'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#Enable Parrot if you server is in 1.12 or higher.
+#To tell to the plugin to take account of it, remove '#' before each attributes.
+#If you have any issue, please contact the developer.
+#  PARROT:
+#    enable: true
+#    name: 'Parrot'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'

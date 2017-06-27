@@ -29,6 +29,7 @@ import fr.roytreo.revenge.core.handler.Mob;
 import fr.roytreo.revenge.core.handler.Particles;
 import fr.roytreo.revenge.core.handler.URLManager;
 import fr.roytreo.revenge.core.softdepend.base.SoftDepend;
+import fr.roytreo.revenge.core.softdepend.base.SoftDepends;
 import fr.roytreo.revenge.core.stats.DataRegister;
 import fr.roytreo.revenge.core.util.ReflectionUtils;
 import fr.roytreo.revenge.core.version.INMSUtils;
@@ -78,8 +79,11 @@ public class RevengePlugin extends JavaPlugin {
 		}
 		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class, PlayerMove.class);
 		
-		setupSoftDepend("PvPManager", "");
-		setupSoftDepend("DeathMessagesPrime", "NOTE: Management of death messages was disabled.");
+		setupSoftDepend(SoftDepends.ShopKeepers, "");
+		setupSoftDepend(SoftDepends.Citizens, "");
+		setupSoftDepend(SoftDepends.UltraCosmetics, "");
+		setupSoftDepend(SoftDepends.PVPManager, "");
+		setupSoftDepend(SoftDepends.DeathMessagesPrime, "NOTE: Management of death messages was disabled to let DeathMessagesPrime handle them.");
 		setupConfig(true);
 		
 		for (World world : Bukkit.getWorlds())
@@ -130,7 +134,7 @@ public class RevengePlugin extends JavaPlugin {
 				{
 					if (args[0].equals("reload")) {
 						setupConfig(false);
-						sender.sendMessage(ChatColor.GREEN + "Revenge config was successfully reloaded!");
+						sender.sendMessage(ChatColor.GREEN + "Revenge's config was successfully reloaded!");
 					} else if (args[0].equals("update")) {
 						if (this.update) {
 							sender.sendMessage(ChatColor.AQUA + "Stay informed about what the update bring new at https://www.spigotmc.org/resources/revenge-1-7-1-8-1-9-1-10.18235/updates");
@@ -188,13 +192,10 @@ public class RevengePlugin extends JavaPlugin {
         setupParticle();
 		setupDisableWorlds();
 		
-		if (onStart) {
-			ConfigurationSection section = this.getConfig().getConfigurationSection("moblist");
-			for (String s : section.getKeys(false))
-				new Mob(s, this);
-		} else {
-			Mob.updateMobs(this);
-		}
+		Mob.map.clear();
+		ConfigurationSection section = this.getConfig().getConfigurationSection("moblist");
+		for (String s : section.getKeys(false))
+			new Mob(s, this);
 	}
 	
 	public void setupParticle()
@@ -251,19 +252,24 @@ public class RevengePlugin extends JavaPlugin {
 		return (IParticleSpawner != null && INMSUtils != null);
 	}
 	
-	public Boolean setupSoftDepend(String softDepend, String comments)
+	public Boolean setupSoftDepend(SoftDepends softDepend, String comments)
 	{
 		try {
-			Plugin plugin = Bukkit.getPluginManager().getPlugin(softDepend);
+			Plugin plugin = Bukkit.getPluginManager().getPlugin(softDepend.getPluginName());
 			if (plugin == null) return false;
-			softDepends.put(softDepend, (SoftDepend) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge.core.softdepend." + softDepend)));
-			getLogger().info(softDepend + " hooked!");
+			softDepends.put(softDepend.getPluginName(), (SoftDepend) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge.core.softdepend." + softDepend.toString())));
+			getLogger().info(softDepend.getPluginName() + " hooked!");
 			if (!comments.trim().equals(""))
 				getLogger().info(comments);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+	public boolean isSoftDepend(SoftDepends softDepend)
+	{
+		return this.softDepends.containsKey(softDepend.getPluginName());
 	}
 	
 	public SoftDepend getSoftDepend(String softDepend)

@@ -26,8 +26,7 @@ public class PlayerDeath extends EventListener {
 				{
 					try {
 						Mob mob = Mob.getMob(EntityType.valueOf((String) value.value()));
-						ev.setDeathMessage(mob.getDeathMessage().replaceAll("%NAME%", mob.getName())
-								.replaceAll("%PLAYER%", p.getName()));
+						ev.setDeathMessage(mob.getDeathMessage().replaceAll("%NAME%", mob.getName()).replaceAll("%PLAYER%", p.getName()));
 						break;
 					} catch (NullPointerException | ClassCastException e) {}
 					p.removeMetadata(plugin.lastDamagerMetadata, this.plugin);

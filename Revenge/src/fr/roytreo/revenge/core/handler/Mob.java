@@ -200,33 +200,6 @@ public class Mob {
 		return map;
 	}
 	
-	public static void updateMobs(RevengePlugin instance) {
-		for (EntityType entity : map.keySet())
-		{
-			Mob mob = map.get(entity);
-			String name = entity.name();
-			try {
-				mob.setEnable(instance.getConfig().getBoolean("moblist." + name + ".enable"));
-				mob.setName(instance.getConfig().getString("moblist." + name + ".name"));
-				mob.setSpeed(instance.getConfig().getDouble("moblist." + name + ".speed"));
-				mob.setDamage((float) instance.getConfig().getDouble("moblist." + name + ".damage"));
-				mob.setDamageIntervalTicks(Math.floor(instance.getConfig().getDouble("moblist." + name + ".damage-interval") * 20.0D));
-				mob.setHitRadius(instance.getConfig().getDouble("moblist." + name + ".hit-radius"));
-				mob.setPercent(instance.getConfig().getInt("moblist." + name + ".percent"));
-				mob.setStopTimeTicks(instance.getConfig().getInt("moblist." + name + ".stop-time") * 20);
-				mob.setStopBlocks(instance.getConfig().getInt("moblist." + name + ".stop-blocks"));
-				if (mob.getStopBlocks() == 0) {
-					mob.setStopBlocks(Integer.MAX_VALUE);
-				}
-				mob.setDeathMessage(ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("moblist." + name + ".death-message")));
-			} catch (Exception ex) {
-				instance.getLogger().warning("Error when loading \"" + name + "\" in config.yml. If you don't know how to fix this issue, please contact the developer.");
-				instance.getLogger().warning("|> Issue's description: " + ex.getMessage());
-				return;
-			}
-		}
-	}
-	
 	public static Set<EntityType> getMapSet() {
 		return map.keySet();
 	}

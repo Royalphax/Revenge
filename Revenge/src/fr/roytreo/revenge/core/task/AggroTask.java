@@ -33,7 +33,7 @@ public class AggroTask extends BukkitRunnable {
 	private ArmorStand trackedInfo;
 
 	public AggroTask(Entity ent, Mob m, Entity victim, RevengePlugin instance) {
-		if (m == null || ent == victim || Mob.getAggroTask(ent) != null) //<!> Bug de dupplication de task
+		if (m == null || ent == victim || ent.isDead())
 			return;
 		this.killer = ent;
 		this.mob = m;
@@ -50,25 +50,6 @@ public class AggroTask extends BukkitRunnable {
 			if (!instance.getSoftDepend("PvPManager").get(Getter.BOOLEAN_PLAYER_HAS_PVP_ENABLED, victim))
 				return;
 		this.killer.setMetadata(this.instance.revengeMobMetadata, new FixedMetadataValue(this.instance, true));
-		if (instance.trackedInfoEnabled) {
-			this.trackedInfo = this.killer.getWorld().spawn(MathUtils.getLeftBackSide(this.killer.getLocation(), 1.5D), ArmorStand.class);
-			this.trackedInfo.setVisible(false);
-			this.instance.INMSUtils.setGravity(this.trackedInfo, false);
-			this.trackedInfo.setCustomNameVisible(false);
-			this.trackedInfo.setMetadata(instance.revengeTrackedInfoMetadata, new FixedMetadataValue(instance, true));
-			String trackedInfoDescription = instance.trackedDescription;
-			if (this.victim instanceof Player) {
-				trackedInfoDescription = trackedInfoDescription.replaceAll("%PLAYER%",
-						((Player) this.victim).getName());
-				ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal());
-				SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-				skullMeta.setOwner(((Player) this.victim).getName());
-				skull.setItemMeta(skullMeta);
-				this.trackedInfo.setHelmet(skull);
-			}
-			this.trackedInfo.setCustomName(trackedInfoDescription);
-			this.trackedInfo.setCustomNameVisible(true);
-		}
 		m.getList().add(this);
 		instance.IParticleSpawner.playParticles(Particles.VILLAGER_ANGRY, ent.getLocation().add(0, 1, 0), 0.0F, 0.0F, 0.0F, 1, 0.1F);
 		runTaskTimer(instance, 0L, 0L);
@@ -96,8 +77,28 @@ public class AggroTask extends BukkitRunnable {
 					return;
 				damage();
 			}
-			if (this.instance.trackedInfoEnabled)
+			if (this.instance.trackedInfoEnabled) {
+				if (this.trackedInfo == null) {
+					this.trackedInfo = this.killer.getWorld().spawn(MathUtils.getLeftBackSide(this.killer.getLocation(), 1.5D), ArmorStand.class);
+					this.trackedInfo.setVisible(false);
+					this.instance.INMSUtils.setGravity(this.trackedInfo, false);
+					this.trackedInfo.setCustomNameVisible(false);
+					this.trackedInfo.setMetadata(instance.revengeTrackedInfoMetadata, new FixedMetadataValue(instance, true));
+					String trackedInfoDescription = instance.trackedDescription;
+					if (this.victim instanceof Player) {
+						trackedInfoDescription = trackedInfoDescription.replaceAll("%PLAYER%",
+								((Player) this.victim).getName());
+						ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal());
+						SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+						skullMeta.setOwner(((Player) this.victim).getName());
+						skull.setItemMeta(skullMeta);
+						this.trackedInfo.setHelmet(skull);
+					}
+					this.trackedInfo.setCustomName(trackedInfoDescription);
+					this.trackedInfo.setCustomNameVisible(true);
+				}
 				this.trackedInfo.teleport(MathUtils.getLeftBackSide(this.killer.getLocation(), 1.5D));
+			}
 			Vector v = this.victim.getLocation().subtract(this.killer.getLocation()).toVector().normalize();
 			this.killer.getLocation().setDirection(v);
 			if (this.killer.getType() == EntityType.SQUID) {

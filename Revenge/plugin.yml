@@ -1,5 +1,5 @@
 name: Revenge
-version: 6.8
+version: 7.0
 author: Asynchronous
 softdepend: [PvPManager, DeathMessagesPrime]
 main: fr.roytreo.revenge.core.RevengePlugin
