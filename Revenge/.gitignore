@@ -55,3 +55,6 @@ local.properties
 .recommenders/
 
 # End of https://www.gitignore.io/api/eclipse
+
+#Private classes
+src/fr/roytreo/revenge/core/stats/
