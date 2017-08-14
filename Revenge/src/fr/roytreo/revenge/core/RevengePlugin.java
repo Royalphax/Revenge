@@ -88,20 +88,24 @@ public class RevengePlugin extends JavaPlugin {
 		
 		for (World world : Bukkit.getWorlds())
 			for (Entity ent : world.getEntities())
-				if (ent instanceof ArmorStand && ent.hasMetadata(this.revengeTrackedInfoMetadata))
-					ent.remove();
-					
+				if (ent instanceof ArmorStand) {
+					ArmorStand as = (ArmorStand) ent;
+					if (!as.isVisible() && !as.hasBasePlate() && as.getBoots() == null && as.getChestplate() == null && as.getLeggings() == null && as.getHelmet() == null) {
+						
+					}
+				}
+		
 		new BukkitRunnable()
 		{
 			public void run()
 			{
-				if (!URLManager.checkVersion(getDescription().getVersion(), false, URLManager.Values.GITHUB_PATH)) {
+				if (!URLManager.checkVersion(getDescription().getVersion(), false, URLManager.Link.GITHUB_PATH)) {
 					getLogger().warning("A new version more efficient of the plugin is available. Do '/rev update' to automatically update the plugin.");
 					update = true;
 				}
-				new DataRegister(instance, localhost, false);
 			}
 		}.runTaskAsynchronously(this);
+		new DataRegister(instance, localhost, true);
 	}
 	
 	@Override
@@ -143,7 +147,7 @@ public class RevengePlugin extends JavaPlugin {
 							{
 								public void run()
 								{
-									if (URLManager.update(instance, URLManager.getLatestVersion(), false, URLManager.Values.GITHUB_PATH))
+									if (URLManager.update(instance, URLManager.getLatestVersion(), false, URLManager.Link.GITHUB_PATH))
 										new BukkitRunnable()
 										{
 											public void run()
@@ -152,7 +156,7 @@ public class RevengePlugin extends JavaPlugin {
 												getFile().deleteOnExit();
 												Bukkit.getServer().shutdown();
 											}
-										}.runTaskLater(instance, 20*5);
+										}.runTaskLater(instance, 100);
 								}
 							}.runTaskLater(this, 20*10);
 						} else {

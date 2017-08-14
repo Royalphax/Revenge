@@ -134,7 +134,7 @@ public class AggroTask extends BukkitRunnable {
 
 	public void down() {
 		cancel();
-		if (this.instance.trackedInfoEnabled)
+		if (this.instance.trackedInfoEnabled && this.trackedInfo != null)
 			this.trackedInfo.remove();
 		this.killer.removeMetadata(this.instance.revengeMobMetadata, this.instance);
 		this.instance.INMSUtils.walkTo(this.killer, this.killer.getLocation(), this.mob.getSpeed());

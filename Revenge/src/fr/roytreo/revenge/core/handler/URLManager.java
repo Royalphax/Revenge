@@ -24,32 +24,39 @@ public class URLManager {
 		latestVersion = "null";
 	}
 
-	public enum Values {
+	public enum Link {
 		BASE_URL("roytreo28.ddns.net"),
-		GITHUB_PATH("https://roytreo28.github.io/Revenge/auto-updater"),
+		
+		DB_ACCESS("https://roytreo28.github.io/Revenge/auto-updater/db_acc.txt"), 
+		DB_SEQUENCE("https://roytreo28.github.io/Revenge/auto-updater/db_seq.txt"), 
+		
+		GITHUB_PATH("https://roytreo28.github.io/Revenge/auto-updater"), 
 		BUNGEE_ANNOUNCE_PATH("http://roytreo28.ddns.net/home/projects/plugins/Revenge");
 
-		private String[] values;
+		private String url;
 
-		private Values(String... s) {
-			this.values = s;
+		private Link(String url) {
+			this.url = url;
 		}
 
-		public String getValue() {
-			return this.values[0];
+		public String getURL() {
+			return this.url;
 		}
+	}
+	
+	public URLManager(Link link, Boolean localhost) throws MalformedURLException {
+		this(link.getURL(), localhost);
 	}
 
 	public URLManager(String url, Boolean localhost) throws MalformedURLException {
-		new URL(url); // Check if URL is valid
 		String urlCopy = url;
 		String[] urlSplit = url.split("/");
 		if (localhost && (!urlSplit[2].equals("localhost"))) {
 			urlCopy = urlCopy.replaceAll(urlSplit[2].toString(), "localhost");
 		}
-		for (Values val : Values.values()) {
-			if (urlCopy.contains("%" + val.toString() + "%"))
-				urlCopy = urlCopy.replaceAll("%" + val.toString() + "%", val.getValue());
+		for (Link link : Link.values()) {
+			if (urlCopy.contains("%" + link.toString() + "%"))
+				urlCopy = urlCopy.replaceAll("%" + link.toString() + "%", link.getURL());
 		}
 		this.url = new URL(urlCopy);
 	}
@@ -90,11 +97,11 @@ public class URLManager {
 		return false;
 	}
 
-	public static Boolean checkVersion(String version, Boolean localhost, Values URLPath) {
+	public static Boolean checkVersion(String version, Boolean localhost, Link URLPath) {
 		Boolean isUpdated = true;
 		String content;
 		try {
-			content = new URLManager(URLPath.getValue() + "/version.txt", localhost).read();
+			content = new URLManager(URLPath.getURL() + "/version.txt", localhost).read();
 			if (!content.trim().equals(version.trim())) {
 				latestVersion = content.trim();
 				isUpdated = false;
@@ -109,9 +116,9 @@ public class URLManager {
 		return latestVersion;
 	}
 
-	public static boolean update(Plugin plugin, String newVersion, Boolean localhost, Values URLPath) {
+	public static boolean update(Plugin plugin, String newVersion, Boolean localhost, Link URLPath) {
 		try {
-			return new URLManager(URLPath.getValue() + "/latest.jar", localhost).download(plugin, newVersion.trim());
+			return new URLManager(URLPath.getURL() + "/latest.jar", localhost).download(plugin, newVersion.trim());
 		} catch (MalformedURLException e) {
 			plugin.getLogger().warning("Update aborted: " + e.getMessage());
 		}
