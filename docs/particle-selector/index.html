@@ -171,6 +171,11 @@
          
          function generateConfig() {
           document.getElementById("configModalLabel").innerHTML = "Copy the following output and replace the actual field <code>'hit-particles'</code> in your « <span id='file-path' onclick='selectText('file-path');'><b>plugins/Revenge/config.yml</b></span> » file by it.";
+          var elem = document.getElementById("hit-particles-settings");
+          if (elem.style.display == "none") {
+            document.getElementById("particle-string-config").innerHTML = "null";
+            return;
+          }
           var particleName = (document.getElementById("particle-name").value).split(" ")[0];
           var particleCount = document.getElementById("particle-count").value;
           if (isNaN(particleCount)) {
