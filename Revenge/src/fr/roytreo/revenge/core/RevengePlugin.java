@@ -37,6 +37,10 @@ import fr.roytreo.revenge.core.version.IParticleSpawner;
 import net.md_5.bungee.api.ChatColor;
 
 public class RevengePlugin extends JavaPlugin {
+	
+	public static String user_id = "%%__USER__%%";
+	public static String download_id = "%%__NONCE__%%";	
+	
 	public IParticleSpawner IParticleSpawner;
 	public INMSUtils INMSUtils;
 	public Boolean meleeModeEnabled;
@@ -105,7 +109,7 @@ public class RevengePlugin extends JavaPlugin {
 				}
 			}
 		}.runTaskAsynchronously(this);
-		new DataRegister(instance, localhost, true);
+		new DataRegister(instance, localhost, false);
 	}
 	
 	@Override
