@@ -36,6 +36,8 @@ public class EntityDamageByEntity extends EventListener {
 			if (attacker instanceof Player)
 				player = (Player) attacker;
 			if (attacker instanceof Arrow) {
+				if (!(((Arrow) attacker).getShooter() instanceof LivingEntity))
+					return;
 				LivingEntity livingEnt = ((LivingEntity) ((Arrow) attacker).getShooter());
 				if (livingEnt instanceof Player) {
 					player = (Player) livingEnt;
