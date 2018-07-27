@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -32,6 +33,11 @@ public class Post13Helper implements I13Helper {
 		}
 		skull.setItemMeta(skullMeta);
 		return skull;
+	}
+
+	@Override
+	public boolean isMarineAnimal(EntityType ent) {
+		return (ent == EntityType.SQUID || ent == EntityType.valueOf("COD") || ent == EntityType.valueOf("SALMON") || ent == EntityType.valueOf("DOLPHIN"));
 	}
 
 }

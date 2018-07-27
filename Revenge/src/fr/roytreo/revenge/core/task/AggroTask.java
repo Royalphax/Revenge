@@ -94,7 +94,7 @@ public class AggroTask extends BukkitRunnable {
 			}
 			Vector v = this.victim.getLocation().subtract(this.killer.getLocation()).toVector().normalize();
 			this.killer.getLocation().setDirection(v);
-			if (this.killer.getType() == EntityType.SQUID) {
+			if (instance.I13Helper.isMarineAnimal(this.killer.getType())) {
 				Material mat = this.killer.getLocation().getBlock().getType();
 				if (instance.I13Helper.isWater(mat) && this.victim.getLocation().distance(this.killer.getLocation()) > this.mob.getHitRadius()) {
 					this.instance.IParticleSpawner.playParticles(Particles.WATER_BUBBLE, this.killer.getLocation(),

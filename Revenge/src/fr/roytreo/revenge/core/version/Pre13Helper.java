@@ -3,6 +3,7 @@ package fr.roytreo.revenge.core.version;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -20,6 +21,11 @@ public class Pre13Helper implements I13Helper {
 		skullMeta.setOwner(player.getName());
 		skull.setItemMeta(skullMeta);
 		return skull;
+	}
+
+	@Override
+	public boolean isMarineAnimal(EntityType ent) {
+		return (ent == EntityType.SQUID);
 	}
 
 }

@@ -1,5 +1,5 @@
 name: Revenge
-version: 7.3.4
+version: 7.3.5
 api-version: 1.13
 author: Asynchronous
 softdepend: [PvPManager, DeathMessagesPrime]
