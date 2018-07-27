@@ -160,7 +160,7 @@ public enum Particles {
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				instance.getLogger().info("[DON'T WORRY] Particle error: " + ex.getMessage());
+				instance.getLogger().info("[DON'T WORRY JUST ASK THE DEVELOPER] Particle error: " + ex.getMessage());
 			}
 			instance.getLogger()
 					.info("Particle set ! / Name: " + hitParticle.toString() + " / Count: " + particleCount
