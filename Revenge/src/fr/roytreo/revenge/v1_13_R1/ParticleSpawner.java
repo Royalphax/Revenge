@@ -21,7 +21,7 @@ public class ParticleSpawner implements IParticleSpawner {
 			Color color = Color.fromBGR(list[0], list[1], list[2]);
 			location.getWorld().spawnParticle(Particle.valueOf(particle.toString()), location, amount, fx, fy, fz, particleData, new DustOptions(color, 1f));
 		}*/
-		if (particle.getOptionalParametersSize() < 1) {
+		if (particle.getOptionalParametersSize() > 0) {
 			if (!triedParticles.contains(particle)) {
 				triedParticles.add(particle);
 				Bukkit.getLogger().info("<!> Something tried to show " + particle.toString() + " particle to a player. Sorry but this particle can't be used yet ! As you may know, 1.13 is really recent and our developers are always looking for how to handle this type of particle. Will be fixed in another update."); 
