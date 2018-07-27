@@ -26,7 +26,7 @@ public class Post13Helper implements I13Helper {
 		try {
 			met = ReflectionUtils.getMethod(skullMeta.getClass(), "setOwningPlayer", OfflinePlayer.class);
 			met.setAccessible(true);
-			met.invoke(Boolean.class, player);
+			met.invoke(boolean.class, player);
 		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}

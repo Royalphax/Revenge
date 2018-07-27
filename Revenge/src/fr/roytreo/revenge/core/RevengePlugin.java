@@ -189,7 +189,6 @@ public class RevengePlugin extends JavaPlugin {
 		if (!configFile.exists()) {
 			this.getLogger().info("Thank you for having downloaded Revenge ! If you find any bugs, feel free to contact our team of developers.");
 			this.getLogger().info("We would really appreciate if you could follow our twitter page where we post news about our plugins <3 https://twitter.com/AsyncDevTeam");
-			this.getLogger().info("Have fun !");
 			this.saveDefaultConfig();
 		}
 		if (!onStart) 
