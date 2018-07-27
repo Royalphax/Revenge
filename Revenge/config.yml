@@ -22,17 +22,17 @@ tracked-info:
   description: "&bI want to kill %PLAYER%"
 
 #Allows animals to have more "realistic" movements and behavior.
-random-behavior: true
+random-behavior: false
 
 #Allows animals to bleed.
-animals-blood: false
+animals-blood: true
 
 #Allows animals to looks like a bit more angry.
-angry-mood: true
+angry-mood: false
 
 #Enable or not the mob aggro without provocation.
 # -> if true, each mob will attack a player if he is at a distance lower than the radius value.
-# <!> This option can need a lot of RAM.
+# <!> This can cost you a lot of RAM.
 global-revenge:
   enable: false
   radius: 20.0
@@ -174,7 +174,7 @@ moblist:
     stop-time: 60
     stop-blocks: 20
     death-message: '%PLAYER% was killed by a %NAME%'
-#Enable Rabbit if you server is in 1.8 or higher.
+#Enable Rabbit if your server is in 1.8 or higher.
 #To tell to the plugin to take account of it, remove '#' before each attributes.
 #If you have any issue, please contact the developer.
 #  RABBIT:
@@ -222,6 +222,64 @@ moblist:
 #  PARROT:
 #    enable: true
 #    name: 'Parrot'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#Enable Dolphins, Fishs & Turtles if you server is in 1.13 or higher.
+#To tell to the plugin to take account of it, remove '#' before each attributes.
+#If you have any issue, please contact the developer.
+#  DOLPHIN:
+#    enable: true
+#    name: 'Dolphin'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#  TROPICAL_FISH:
+#    enable: true
+#    name: 'Tropical fish'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#  SALMON:
+#    enable: true
+#    name: 'Salmon'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#  COD:
+#    enable: true
+#    name: 'Cod'
+#    speed: 1.0
+#    damage: 2.0
+#    damage-interval: 0
+#    hit-radius: 2.5
+#    percent: 50
+#    stop-time: 60
+#    stop-blocks: 20
+#    death-message: '%PLAYER% was killed by a %NAME%'
+#  TURTLE:
+#    enable: true
+#    name: 'Turtle'
 #    speed: 1.0
 #    damage: 2.0
 #    damage-interval: 0
