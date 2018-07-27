@@ -32,8 +32,11 @@ import fr.roytreo.revenge.core.softdepend.base.SoftDepend;
 import fr.roytreo.revenge.core.softdepend.base.SoftDepends;
 import fr.roytreo.revenge.core.stats.DataRegister;
 import fr.roytreo.revenge.core.util.ReflectionUtils;
+import fr.roytreo.revenge.core.version.I13Helper;
 import fr.roytreo.revenge.core.version.INMSUtils;
 import fr.roytreo.revenge.core.version.IParticleSpawner;
+import fr.roytreo.revenge.core.version.Pre13Helper;
+import fr.roytreo.revenge.v1_13_R1.Post13Helper;
 import net.md_5.bungee.api.ChatColor;
 
 public class RevengePlugin extends JavaPlugin {
@@ -43,6 +46,7 @@ public class RevengePlugin extends JavaPlugin {
 	
 	public IParticleSpawner IParticleSpawner;
 	public INMSUtils INMSUtils;
+	public I13Helper I13Helper;
 	public Boolean meleeModeEnabled;
 	public Boolean update;
 	public Boolean localhost;
@@ -114,7 +118,7 @@ public class RevengePlugin extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		Bukkit.getScheduler().cancelAllTasks();
+		Bukkit.getScheduler().cancelTasks(this);
 	}
 
 	private void registerListeners(@SuppressWarnings("unchecked") Class<? extends EventListener>... classes) {
@@ -183,10 +187,13 @@ public class RevengePlugin extends JavaPlugin {
 	{
 		File configFile = new File(getDataFolder(), "config.yml");
 		if (!configFile.exists()) {
-			this.getLogger().info("Thank you for having downloaded Revenge ! If you find any bugs, feel free to contact the developer.");
+			this.getLogger().info("Thank you for having downloaded Revenge ! If you find any bugs, feel free to contact our team of developers.");
+			this.getLogger().info("We would really appreciate if you could follow our twitter page where we post news about our plugins <3 https://twitter.com/AsyncDevTeam");
+			this.getLogger().info("Have fun !");
 			this.saveDefaultConfig();
 		}
-		if (!onStart) this.reloadConfig();
+		if (!onStart) 
+			this.reloadConfig();
 		this.meleeModeRadius = getConfig().getDouble("melee-mode.radius");
 		this.meleeModeEnabled = getConfig().getBoolean("melee-mode.enable");
 		this.trackedInfoEnabled = getConfig().getBoolean("tracked-info.enable");
@@ -255,6 +262,12 @@ public class RevengePlugin extends JavaPlugin {
 				| NoSuchMethodException | ClassNotFoundException e) {
 			getLogger().warning(e.getMessage());
 			return false;
+		}
+		
+		if (version.equals("v1_13_R1")) {
+			I13Helper = new Post13Helper();
+		} else {
+			I13Helper = new Pre13Helper();
 		}
 		
 		return (IParticleSpawner != null && INMSUtils != null);

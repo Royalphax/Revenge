@@ -2,14 +2,12 @@ package fr.roytreo.revenge.core.task;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -86,13 +84,8 @@ public class AggroTask extends BukkitRunnable {
 					this.trackedInfo.setMetadata(instance.revengeTrackedInfoMetadata, new FixedMetadataValue(instance, true));
 					String trackedInfoDescription = instance.trackedDescription;
 					if (this.victim instanceof Player) {
-						trackedInfoDescription = trackedInfoDescription.replaceAll("%PLAYER%",
-								((Player) this.victim).getName());
-						ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal());
-						SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-						skullMeta.setOwner(((Player) this.victim).getName());
-						skull.setItemMeta(skullMeta);
-						this.trackedInfo.setHelmet(skull);
+						trackedInfoDescription = trackedInfoDescription.replaceAll("%PLAYER%", ((Player) this.victim).getName());
+						this.trackedInfo.setHelmet(instance.I13Helper.getSkull((OfflinePlayer) this.victim));
 					}
 					this.trackedInfo.setCustomName(trackedInfoDescription);
 					this.trackedInfo.setCustomNameVisible(true);
@@ -103,8 +96,7 @@ public class AggroTask extends BukkitRunnable {
 			this.killer.getLocation().setDirection(v);
 			if (this.killer.getType() == EntityType.SQUID) {
 				Material mat = this.killer.getLocation().getBlock().getType();
-				if ((mat == Material.WATER || mat == Material.STATIONARY_WATER)
-						&& this.victim.getLocation().distance(this.killer.getLocation()) > this.mob.getHitRadius()) {
+				if (instance.I13Helper.isWater(mat) && this.victim.getLocation().distance(this.killer.getLocation()) > this.mob.getHitRadius()) {
 					this.instance.IParticleSpawner.playParticles(Particles.WATER_BUBBLE, this.killer.getLocation(),
 							0.3F, 0.3F, 0.3F, 3, 0.1F);
 					this.killer.setVelocity(v.multiply(this.mob.getSpeed()));
