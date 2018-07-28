@@ -98,8 +98,8 @@ public class RevengePlugin extends JavaPlugin {
 			for (Entity ent : world.getEntities())
 				if (ent instanceof ArmorStand) {
 					ArmorStand as = (ArmorStand) ent;
-					if (!as.isVisible() && !as.hasBasePlate() && as.getBoots() == null && as.getChestplate() == null && as.getLeggings() == null && as.getHelmet() == null) {
-						
+					if (!as.isVisible() && !as.hasBasePlate() && as.getBoots() == null && as.getChestplate() == null && as.getLeggings() == null && as.getHelmet() != null) {
+						ent.remove();
 					}
 				}
 		

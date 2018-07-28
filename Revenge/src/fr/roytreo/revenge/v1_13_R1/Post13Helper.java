@@ -3,6 +3,7 @@ package fr.roytreo.revenge.v1_13_R1;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
@@ -27,9 +28,10 @@ public class Post13Helper implements I13Helper {
 		try {
 			met = ReflectionUtils.getMethod(skullMeta.getClass(), "setOwningPlayer", OfflinePlayer.class);
 			met.setAccessible(true);
-			met.invoke(boolean.class, player);
+			met.invoke(skullMeta, player);
 		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
+			Bukkit.getLogger().info("Don't worry about this error. Just ask the developer !");
 		}
 		skull.setItemMeta(skullMeta);
 		return skull;
