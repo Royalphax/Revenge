@@ -1,5 +1,6 @@
 package fr.roytreo.revenge.core.task;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -15,7 +16,8 @@ import org.bukkit.util.Vector;
 import fr.roytreo.revenge.core.RevengePlugin;
 import fr.roytreo.revenge.core.handler.Mob;
 import fr.roytreo.revenge.core.handler.Particles;
-import fr.roytreo.revenge.core.softdepend.base.SoftDepend.Getter;
+import fr.roytreo.revenge.core.hook.base.HookManager.Getter;
+import fr.roytreo.revenge.core.hook.base.Hooks;
 import fr.roytreo.revenge.core.util.MathUtils;
 
 public class AggroTask extends BukkitRunnable {
@@ -44,9 +46,15 @@ public class AggroTask extends BukkitRunnable {
 		this.countIntervalTicks = this.mob.getDamageIntervalTicks() != 0.0D;
 		this.enableParticles = instance.revengeParticle != null;
 		this.instance = instance;
-		if ((instance.softDepends.containsKey("PvPManager")) && (victim instanceof Player))
-			if (!instance.getSoftDepend("PvPManager").get(Getter.BOOLEAN_PLAYER_HAS_PVP_ENABLED, victim))
+		if ((instance.isHooked(Hooks.PVPManager)) && (victim instanceof Player))
+			if (instance.getHook(Hooks.PVPManager).get(Getter.BOOLEAN_PLAYER_HAS_PVP_DISABLED, victim))
 				return;
+		if ((instance.isHooked(Hooks.VanishNoPacket)) && (victim instanceof Player))
+			if (instance.getHook(Hooks.VanishNoPacket).get(Getter.BOOLEAN_PLAYER_IS_VANISHED, victim)) {
+				if (!instance.globalRevenge)
+					victim.sendMessage(ChatColor.DARK_AQUA + "You're vanished. This entity can't see you.");
+				return;
+			}
 		this.killer.setMetadata(this.instance.revengeMobMetadata, new FixedMetadataValue(this.instance, true));
 		m.getList().add(this);
 		instance.IParticleSpawner.playParticles(Particles.VILLAGER_ANGRY, ent.getLocation().add(0, 1, 0), 0.0F, 0.0F, 0.0F, 1, 0.1F);

@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import fr.roytreo.revenge.core.RevengePlugin;
 import fr.roytreo.revenge.core.event.EventListener;
 import fr.roytreo.revenge.core.handler.Mob;
-import fr.roytreo.revenge.core.softdepend.base.SoftDepends;
+import fr.roytreo.revenge.core.hook.base.Hooks;
 import fr.roytreo.revenge.core.task.AggroTask;
 
 public class EntityDamageByEntity extends EventListener {
@@ -29,7 +29,7 @@ public class EntityDamageByEntity extends EventListener {
 		Entity attacker = ev.getDamager();
 		if (this.plugin.disableWorlds.contains(attacker.getLocation().getWorld()))
 			return;
-		if ((this.plugin.isSoftDepend(SoftDepends.Citizens) && entity.hasMetadata("NPC")) || (this.plugin.isSoftDepend(SoftDepends.ShopKeepers) && entity.hasMetadata("shopkeeper")) || (this.plugin.isSoftDepend(SoftDepends.UltraCosmetics) && entity.hasMetadata("Pet"))) 
+		if ((this.plugin.isHooked(Hooks.Citizens) && entity.hasMetadata("NPC")) || (this.plugin.isHooked(Hooks.ShopKeepers) && entity.hasMetadata("shopkeeper")) || (this.plugin.isHooked(Hooks.UltraCosmetics) && entity.hasMetadata("Pet"))) 
 			return;
 		if ((attacker instanceof Player || attacker instanceof Arrow) && ev.getDamage() > 0) {
 			Player player = null;
@@ -69,6 +69,8 @@ public class EntityDamageByEntity extends EventListener {
 								for (Entity nearbyEntity : entity.getNearbyEntities(this.plugin.meleeModeRadius, this.plugin.meleeModeRadius, this.plugin.meleeModeRadius)) {
 									if (Mob.isRegistred(nearbyEntity.getType()) && nearbyEntity.getType() != EntityType.PLAYER)
 									{
+										if (this.plugin.onlySameSpecies && nearbyEntity.getType() != entity.getType())
+											continue;
 										Mob nearbyMob = Mob.getMob(nearbyEntity.getType());
 										if (nearbyMob.isEnable())
 										{
