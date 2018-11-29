@@ -25,11 +25,13 @@ import fr.roytreo.revenge.core.event.player.PlayerDeath;
 import fr.roytreo.revenge.core.event.player.PlayerInteractAtEntity;
 import fr.roytreo.revenge.core.event.player.PlayerJoin;
 import fr.roytreo.revenge.core.event.player.PlayerMove;
+import fr.roytreo.revenge.core.event.server.PluginDisable;
+import fr.roytreo.revenge.core.event.server.PluginEnable;
 import fr.roytreo.revenge.core.handler.Mob;
 import fr.roytreo.revenge.core.handler.Particles;
 import fr.roytreo.revenge.core.handler.URLManager;
-import fr.roytreo.revenge.core.softdepend.base.SoftDepend;
-import fr.roytreo.revenge.core.softdepend.base.SoftDepends;
+import fr.roytreo.revenge.core.hook.base.HookManager;
+import fr.roytreo.revenge.core.hook.base.Hooks;
 import fr.roytreo.revenge.core.stats.DataRegister;
 import fr.roytreo.revenge.core.util.ReflectionUtils;
 import fr.roytreo.revenge.core.version.I13Helper;
@@ -40,14 +42,15 @@ import fr.roytreo.revenge.v1_13_R1.Post13Helper;
 import net.md_5.bungee.api.ChatColor;
 
 public class RevengePlugin extends JavaPlugin {
-	
+
 	public static String user_id = "%%__USER__%%";
-	public static String download_id = "%%__NONCE__%%";	
-	
+	public static String download_id = "%%__NONCE__%%";
+
 	public IParticleSpawner IParticleSpawner;
 	public INMSUtils INMSUtils;
 	public I13Helper I13Helper;
 	public Boolean meleeModeEnabled;
+	public Boolean onlySameSpecies;
 	public Boolean update;
 	public Boolean localhost;
 	public Boolean trackedInfoEnabled;
@@ -62,10 +65,10 @@ public class RevengePlugin extends JavaPlugin {
 	public Double meleeModeRadius;
 	public Double globalRevengeRadius;
 	public ArrayList<World> disableWorlds;
-	public HashMap<String, SoftDepend> softDepends;
+	public HashMap<Hooks, HookManager> hooks;
 	public Particles.RevengeParticle revengeParticle;
 	public static RevengePlugin instance;
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void onEnable() {
@@ -76,46 +79,41 @@ public class RevengePlugin extends JavaPlugin {
 		this.revengeMobMetadata = "revengeMob";
 		this.revengeTrackedInfoMetadata = "revengeArmorStand";
 		this.disableWorlds = new ArrayList<>();
-		this.softDepends = new HashMap<>();
+		this.hooks = new HashMap<>();
 		this.revengeParticle = null;
-		
-		if (!setupNMS())
-		{
-			this.getLogger().warning("Revenge doesn't support this version of Spigot. (If you think that's a mistake => contact the developer)");
+
+		if (!setupNMS()) {
+			this.getLogger()
+					.warning("Revenge doesn't support this version of Spigot. (If you think that's a mistake => contact the developer)");
 			this.getPluginLoader().disablePlugin(this);
 			return;
 		}
-		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class, PlayerMove.class);
-		
-		setupSoftDepend(SoftDepends.ShopKeepers, "");
-		setupSoftDepend(SoftDepends.Citizens, "");
-		setupSoftDepend(SoftDepends.UltraCosmetics, "");
-		setupSoftDepend(SoftDepends.PVPManager, "");
-		setupSoftDepend(SoftDepends.DeathMessagesPrime, "NOTE: Management of death messages was disabled to let DeathMessagesPrime handle them.");
+		registerListeners(EntityDamageByEntity.class, PlayerDeath.class, PlayerJoin.class, PlayerDamage.class, PlayerInteractAtEntity.class, PlayerMove.class, PluginEnable.class, PluginDisable.class);
+
 		setupConfig(true);
-		
+
 		for (World world : Bukkit.getWorlds())
 			for (Entity ent : world.getEntities())
 				if (ent instanceof ArmorStand) {
 					ArmorStand as = (ArmorStand) ent;
-					if (!as.isVisible() && !as.hasBasePlate() && as.getBoots() == null && as.getChestplate() == null && as.getLeggings() == null && as.getHelmet() != null) {
+					if (!as.isVisible() && !as.hasBasePlate() && as.getBoots() == null && as.getChestplate() == null
+							&& as.getLeggings() == null && as.getHelmet() != null) {
 						ent.remove();
 					}
 				}
-		
-		new BukkitRunnable()
-		{
-			public void run()
-			{
+
+		new BukkitRunnable() {
+			public void run() {
 				if (!URLManager.checkVersion(getDescription().getVersion(), false, URLManager.Link.GITHUB_PATH)) {
-					getLogger().warning("A new version more efficient of the plugin is available. Do '/rev update' to automatically update the plugin.");
+					getLogger()
+							.warning("A new version more efficient of the plugin is available. Do '/rev update' to automatically update the plugin.");
 					update = true;
 				}
 			}
 		}.runTaskAsynchronously(this);
 		new DataRegister(instance, localhost, false);
 	}
-	
+
 	@Override
 	public void onDisable() {
 		Bukkit.getScheduler().cancelTasks(this);
@@ -124,8 +122,10 @@ public class RevengePlugin extends JavaPlugin {
 	private void registerListeners(@SuppressWarnings("unchecked") Class<? extends EventListener>... classes) {
 		try {
 			for (Class<? extends EventListener> clazz : classes) {
-				Constructor<? extends EventListener> constructor = clazz.getConstructor(new Class[] { RevengePlugin.class });
-				Bukkit.getPluginManager().registerEvents((Listener) constructor.newInstance(new Object[] { this }), this);
+				Constructor<? extends EventListener> constructor = clazz
+						.getConstructor(new Class[] { RevengePlugin.class });
+				Bukkit.getPluginManager()
+						.registerEvents((Listener) constructor.newInstance(new Object[] { this }), this);
 			}
 		} catch (Throwable ex) {
 			try {
@@ -135,38 +135,34 @@ public class RevengePlugin extends JavaPlugin {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
-		if (command.getName().equals("revenge"))
-		{
-			if (sender.isOp())
-			{
-				if (args.length == 1)
-				{
+		if (command.getName().equals("revenge")) {
+			if (sender.isOp()) {
+				if (args.length == 1) {
 					if (args[0].equals("reload")) {
 						setupConfig(false);
 						sender.sendMessage(ChatColor.GREEN + "Revenge's config was successfully reloaded!");
 					} else if (args[0].equals("update")) {
 						if (this.update) {
-							sender.sendMessage(ChatColor.AQUA + "Stay informed about what the update bring new at https://www.spigotmc.org/resources/revenge-1-7-1-8-1-9-1-10.18235/updates");
-							sender.sendMessage(ChatColor.GOLD + "The updating task will start in 10 seconds, then your server will shutdown to complete the updating process.");
-							new BukkitRunnable()
-							{
-								public void run()
-								{
-									if (URLManager.update(instance, URLManager.getLatestVersion(), false, URLManager.Link.GITHUB_PATH))
-										new BukkitRunnable()
-										{
-											public void run()
-											{
+							sender.sendMessage(ChatColor.AQUA
+									+ "Stay informed about what the update bring new at https://www.spigotmc.org/resources/revenge-1-7-1-8-1-9-1-10.18235/updates");
+							sender.sendMessage(ChatColor.GOLD
+									+ "The updating task will start in 10 seconds, then your server will shutdown to complete the updating process.");
+							new BukkitRunnable() {
+								public void run() {
+									if (URLManager.update(instance, URLManager
+											.getLatestVersion(), false, URLManager.Link.GITHUB_PATH))
+										new BukkitRunnable() {
+											public void run() {
 												getFile().delete();
 												getFile().deleteOnExit();
 												Bukkit.getServer().shutdown();
 											}
 										}.runTaskLater(instance, 100);
 								}
-							}.runTaskLater(this, 20*10);
+							}.runTaskLater(this, 20 * 10);
 						} else {
 							sender.sendMessage(ChatColor.RED + "Revenge is already up to date.");
 						}
@@ -182,103 +178,105 @@ public class RevengePlugin extends JavaPlugin {
 		}
 		return super.onCommand(sender, command, label, args);
 	}
-	
-	public void setupConfig(Boolean onStart)
-	{
+
+	public void setupConfig(Boolean onStart) {
 		File configFile = new File(getDataFolder(), "config.yml");
 		if (!configFile.exists()) {
-			this.getLogger().info("Thank you for having downloaded Revenge ! If you find any bugs, feel free to contact our team of developers.");
-			this.getLogger().info("We would really appreciate if you could follow our twitter page where we post news about our plugins <3 https://twitter.com/AsyncDevTeam");
+			this.getLogger()
+					.info("Thank you for having downloaded Revenge ! If you find any bugs, feel free to contact our team of developers.");
+			this.getLogger()
+					.info("We would really appreciate if you could follow our twitter page where we post news about our plugins <3 https://twitter.com/AsyncDevTeam");
 			this.saveDefaultConfig();
 		}
-		if (!onStart) 
+		if (!onStart)
 			this.reloadConfig();
 		this.meleeModeRadius = getConfig().getDouble("melee-mode.radius");
+		this.onlySameSpecies = getConfig().getBoolean("melee-mode.only-same-species");
 		this.meleeModeEnabled = getConfig().getBoolean("melee-mode.enable");
 		this.trackedInfoEnabled = getConfig().getBoolean("tracked-info.enable");
-		this.trackedDescription = ChatColor.translateAlternateColorCodes('&', getConfig().getString("tracked-info.description"));
+		this.trackedDescription = ChatColor
+				.translateAlternateColorCodes('&', getConfig().getString("tracked-info.description"));
 		this.randomBehavior = getConfig().getBoolean("random-behavior");
 		this.animalsBlood = getConfig().getBoolean("animals-blood");
 		this.angryMood = getConfig().getBoolean("angry-mood");
 		this.globalRevenge = getConfig().getBoolean("global-revenge.enable");
 		this.globalRevengeRadius = getConfig().getDouble("global-revenge.radius");
 
-        setupParticle();
+		setupParticle();
 		setupDisableWorlds();
-		
+
 		Mob.map.clear();
 		ConfigurationSection section = this.getConfig().getConfigurationSection("moblist");
 		for (String s : section.getKeys(false))
 			new Mob(s, this);
 	}
-	
-	public void setupParticle()
-	{
+
+	public void setupParticle() {
 		try {
 			String particle = "";
 			particle = getConfig().getString("hit-particles");
-			if (particle.equals("null") || particle.equals(""))
-			{
+			if (particle.equals("null") || particle.equals("")) {
 				return;
 			}
 			this.revengeParticle = new Particles.RevengeParticle(this, particle);
 		} catch (NullPointerException | IllegalArgumentException ex) {
-			getLogger().warning("An error occured when reading the 'hit-particles' field in config.yml. Please review your syntax.");
+			getLogger()
+					.warning("An error occured when reading the 'hit-particles' field in config.yml. Please review your syntax.");
 			return;
 		}
 	}
-	
-	public void setupDisableWorlds()
-	{
+
+	public void setupDisableWorlds() {
 		ArrayList<String> worlds = new ArrayList<>();
-		for (String world : getConfig().getStringList("disable-worlds"))
-		{
-			if (Bukkit.getWorld(world) != null)
-			{
+		for (String world : getConfig().getStringList("disable-worlds")) {
+			if (Bukkit.getWorld(world) != null) {
 				this.disableWorlds.add(Bukkit.getWorld(world));
 				worlds.add(world);
 			} else {
-				getLogger().info("Disable Worlds: It appears that you have no world named \"" + world + "\" on your server.");
+				getLogger().info("Disable Worlds: It appears that you have no world named \"" + world
+						+ "\" on your server.");
 			}
 		}
 		if (!worlds.isEmpty())
 			getLogger().info("Disable Worlds: " + worlds.toString().replace("[", "").replace("]", ""));
 	}
 
-	public Boolean setupNMS()
-	{
+	public Boolean setupNMS() {
 		String version;
 		try {
 			version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 		} catch (ArrayIndexOutOfBoundsException unsuportedVersion) {
 			return false;
 		}
-		
+
 		try {
-			IParticleSpawner = (IParticleSpawner) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".ParticleSpawner"));
-			INMSUtils = (INMSUtils) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".NMSUtils"));
+			IParticleSpawner = (IParticleSpawner) ReflectionUtils
+					.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".ParticleSpawner"));
+			INMSUtils = (INMSUtils) ReflectionUtils
+					.instantiateObject(Class.forName("fr.roytreo.revenge." + version + ".NMSUtils"));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | ClassNotFoundException e) {
 			getLogger().warning(e.getMessage());
 			return false;
 		}
-		
+
 		if (version.startsWith("v1_13")) {
 			I13Helper = new Post13Helper();
 		} else {
 			I13Helper = new Pre13Helper();
 		}
-		
+
 		return (IParticleSpawner != null && INMSUtils != null);
 	}
-	
-	public Boolean setupSoftDepend(SoftDepends softDepend, String comments)
-	{
+
+	public Boolean initHook(Hooks hook, String comments) {
 		try {
-			Plugin plugin = Bukkit.getPluginManager().getPlugin(softDepend.getPluginName());
-			if (plugin == null) return false;
-			softDepends.put(softDepend.getPluginName(), (SoftDepend) ReflectionUtils.instantiateObject(Class.forName("fr.roytreo.revenge.core.softdepend." + softDepend.toString())));
-			getLogger().info(softDepend.getPluginName() + " hooked!");
+			Plugin plugin = Bukkit.getPluginManager().getPlugin(hook.getPluginName());
+			if (plugin == null)
+				return false;
+			hooks.put(hook, (HookManager) ReflectionUtils
+					.instantiateObject(Class.forName("fr.roytreo.revenge.core.hook." + hook.toString())));
+			getLogger().info(hook.getPluginName() + " hooked!");
 			if (!comments.trim().equals(""))
 				getLogger().info(comments);
 			return true;
@@ -286,14 +284,19 @@ public class RevengePlugin extends JavaPlugin {
 			return false;
 		}
 	}
-	
-	public boolean isSoftDepend(SoftDepends softDepend)
-	{
-		return this.softDepends.containsKey(softDepend.getPluginName());
+
+	public void removeHook(Hooks hook) {
+		if (hooks.containsKey(hook)) {
+			hooks.remove(hook);
+			getLogger().info(hook.getPluginName() + " unhooked!");
+		}
 	}
-	
-	public SoftDepend getSoftDepend(String softDepend)
-	{
-		return this.softDepends.get(softDepend);
+
+	public boolean isHooked(Hooks softDepend) {
+		return this.hooks.containsKey(softDepend);
+	}
+
+	public HookManager getHook(Hooks softDepend) {
+		return this.hooks.get(softDepend);
 	}
 }
