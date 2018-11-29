@@ -9,6 +9,7 @@ import org.bukkit.metadata.MetadataValue;
 import fr.roytreo.revenge.core.RevengePlugin;
 import fr.roytreo.revenge.core.event.EventListener;
 import fr.roytreo.revenge.core.handler.Mob;
+import fr.roytreo.revenge.core.hook.base.Hooks;
 
 public class PlayerDeath extends EventListener {
 	public PlayerDeath(RevengePlugin plugin) {
@@ -18,7 +19,7 @@ public class PlayerDeath extends EventListener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent ev) {
 		Player p = ev.getEntity();
-		if (p.hasMetadata(plugin.lastDamagerMetadata) && !this.plugin.softDepends.containsKey("DeathMessagesPrime"))
+		if (p.hasMetadata(plugin.lastDamagerMetadata) && !this.plugin.hooks.containsKey(Hooks.DeathMessagesPrime))
 		{
 			for (MetadataValue value : p.getMetadata(plugin.lastDamagerMetadata))
 			{

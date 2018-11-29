@@ -9,6 +9,7 @@
 melee-mode:
   enable: false
   radius: 20.0
+  only-same-species: false
   
 #Particle to show when a mob fight a player.
 #Put 'null' to show no particles.
@@ -28,7 +29,7 @@ random-behavior: false
 animals-blood: true
 
 #Allows animals to looks like a bit more angry.
-angry-mood: false
+angry-mood: true
 
 #Enable or not the mob aggro without provocation.
 # -> if true, each mob will attack a player if he is at a distance lower than the radius value.
