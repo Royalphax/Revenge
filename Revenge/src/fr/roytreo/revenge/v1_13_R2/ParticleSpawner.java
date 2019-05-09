@@ -24,7 +24,7 @@ public class ParticleSpawner implements IParticleSpawner {
 		if (particle.getOptionalParametersSize() > 0) {
 			if (!triedParticles.contains(particle)) {
 				triedParticles.add(particle);
-				Bukkit.getLogger().info("<!> Something tried to show " + particle.toString() + " particle to a player. Sorry but this particle can't be used yet ! As you may know, 1.13 is really recent and our developers are always looking for how to handle this type of particle. Will be fixed in another update."); 
+				Bukkit.getLogger().info("<!> Something tried to show " + particle.toString() + " particle to a player. Sorry but this particle can't be used yet ! Will be fixed in a future update."); 
 			}
 		} else {
 			location.getWorld().spawnParticle(Particle.valueOf(particle.toString()), location, amount, fx, fy, fz, particleData);
