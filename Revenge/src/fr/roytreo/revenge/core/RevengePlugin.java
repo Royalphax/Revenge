@@ -260,7 +260,7 @@ public class RevengePlugin extends JavaPlugin {
 			return false;
 		}
 
-		if (version.startsWith("v1_13")) {
+		if (Integer.parseInt(version.split("_")[1]) >= 13) {
 			I13Helper = new Post13Helper();
 		} else {
 			I13Helper = new Pre13Helper();
