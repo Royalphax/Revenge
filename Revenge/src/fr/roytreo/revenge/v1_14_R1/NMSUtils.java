@@ -19,8 +19,8 @@ public class NMSUtils implements INMSUtils {
 	public void walkTo(Entity entity, Location location, Double aggroSpeed) {
 		Object pObject = ((CraftEntity) entity).getHandle();
 
-		net.minecraft.server.v1_14_R1.PathEntity path = ((EntityInsentient) pObject).getNavigation().a(location.getX(),
-				location.getY(), location.getZ());
+		//net.minecraft.server.v1_14_R1.PathEntity path = ((EntityInsentient) pObject).getNavigation().a(location.getX(), location.getY(), location.getZ());
+		net.minecraft.server.v1_14_R1.PathEntity path = ((EntityInsentient) pObject).getNavigation().a(location.getX(), location.getY(), location.getZ(), 1);
 		if (path != null) {
 			((EntityInsentient) pObject).getNavigation().a(path, 2.0D);
 			((EntityInsentient) pObject).getNavigation().a(aggroSpeed);

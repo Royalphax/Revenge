@@ -11,7 +11,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -92,16 +91,6 @@ public class RevengePlugin extends JavaPlugin {
 
 		setupConfig(true);
 
-		for (World world : Bukkit.getWorlds())
-			for (Entity ent : world.getEntities())
-				if (ent instanceof ArmorStand) {
-					ArmorStand as = (ArmorStand) ent;
-					if (!as.isVisible() && !as.hasBasePlate() && as.getBoots() == null && as.getChestplate() == null
-							&& as.getLeggings() == null && as.getHelmet() != null) {
-						ent.remove();
-					}
-				}
-
 		new BukkitRunnable() {
 			public void run() {
 				if (!URLManager.checkVersion(getDescription().getVersion(), false, URLManager.Link.GITHUB_PATH)) {
@@ -117,6 +106,11 @@ public class RevengePlugin extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		Bukkit.getScheduler().cancelTasks(this);
+		for (World world : Bukkit.getWorlds())
+			for (Entity ent : world.getEntities())
+				if (ent.hasMetadata(revengeTrackedInfoMetadata)) {
+					ent.remove();
+				}
 	}
 
 	private void registerListeners(@SuppressWarnings("unchecked") Class<? extends EventListener>... classes) {

@@ -102,7 +102,7 @@ public class URLManager {
 		String content;
 		try {
 			content = new URLManager(URLPath.getURL() + "/version.txt", localhost).read();
-			if (!content.trim().equals(version.trim())) {
+			if (!content.trim().equals(version.split("-")[0].trim())) {
 				latestVersion = content.trim();
 				isUpdated = false;
 			}

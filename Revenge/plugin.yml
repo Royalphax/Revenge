@@ -1,5 +1,5 @@
 name: Revenge
-version: 7.4.1
+version: 7.4.1-POST-1.14.4
 api-version: 1.13
 author: Asynchronous
 main: fr.roytreo.revenge.core.RevengePlugin
