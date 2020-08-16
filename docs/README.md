@@ -1,5 +1,5 @@
 # Welcome in docs directory
-Here is stored the web part of Revenge. To access it, use this link: https://roytreo28.github.io/Revenge/
+Here is stored the web part of Revenge. To access it, use this link: https://royalphax.github.io/Revenge/
 
 ### Folders description
 * `assets/` — Used to store all the website assets like css sheet and web icon.
