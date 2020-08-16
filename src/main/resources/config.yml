@@ -1,0 +1,276 @@
+ #####################################################
+##		         Plugin Revenge				         ##
+##				   by Royalpha   					 ##
+ #####################################################
+
+#Enable melee mode and set the desired radius
+#If enabled, when an animal starts his aggro on a player
+#all entities in radius will attack the player (Skeletons, Zombies,... too).
+melee-mode:
+  enable: false
+  radius: 20.0
+  only-same-species: false
+
+#Particle to show when a mob fight a player.
+#Put 'null' to show no particles.
+#Go here to customize particles: https://royalphax.github.io/Revenge/particle-selector/
+hit-particles: 'CRIT;3;0.1;0.5;0.3;0.5;0'
+
+tracked-info:
+  #If enabled, the head of the player aggro by the animal will be displayed above it.
+  enable: false
+  #Description is the message displayed above the head.
+  description: "&bI want to kill %PLAYER%"
+
+#Allows animals to have more "realistic" movements and behavior.
+random-behavior: false
+
+#Allows animals to bleed.
+animals-blood: true
+
+#Allows animals to looks like a bit more angry.
+angry-mood: true
+
+#Enable or not the mob aggro without provocation.
+# -> if true, each mob will attack a player if he is at a distance lower than the radius value.
+# <!> This can cost you a lot of RAM.
+global-revenge:
+  enable: false
+  radius: 20.0
+
+#Disable worlds
+disable-worlds:
+  - 'example'
+
+#Configured mobs list
+moblist:
+  BAT:
+    #Enable or not the mob aggro
+    enable: true
+    #The name of the mob (used for %NAME% in death-message)
+    name: 'Bat'
+    #Speed of the mob during aggro
+    speed: 1.0
+    #Damage dealt by the mob during aggro
+    damage: 2.0
+    #Damage interval mean how many second to wait between each hit (put 0 to disable this feature)
+    damage-interval: 0
+    #From how many blocks the mob can hit you
+    hit-radius: 2.5
+    #Percent means the luck to aggro this mob when hitting it
+    percent: 50
+    #Stop aggro after how many seconds ? (put 0 to disable this feature)
+    stop-time: 60
+    #Stop aggro if player is how many blocks far away the mob ? (put 0 to disable this feature)
+    stop-blocks: 20
+    #Death message when the player is killed by this mob
+    death-message: '%PLAYER% was killed by a %NAME%'
+  CHICKEN:
+    enable: true
+    name: 'Chicken'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  COW:
+    enable: true
+    name: 'Cow'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  MUSHROOM_COW:
+    enable: true
+    name: 'Mushroom Cow'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  PIG:
+    enable: true
+    name: 'Pig'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  SHEEP:
+    enable: true
+    name: 'Sheep'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  SQUID:
+    enable: true
+    name: 'Squid'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  HORSE:
+    enable: true
+    name: 'Horse'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  VILLAGER:
+    enable: true
+    name: 'Villager'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  WOLF:
+    enable: false
+    name: 'Wolf'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  OCELOT:
+    enable: true
+    name: 'Little Kitty'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  RABBIT:
+    enable: true
+    name: 'Rabbit'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  POLAR_BEAR:
+    enable: true
+    name: 'Polar Bear'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  LLAMA:
+    enable: true
+    name: 'Lama'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  PARROT:
+    enable: true
+    name: 'Parrot'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  DOLPHIN:
+    enable: true
+    name: 'Dolphin'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  TROPICAL_FISH:
+    enable: true
+    name: 'Tropical fish'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  SALMON:
+    enable: true
+    name: 'Salmon'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  COD:
+    enable: true
+    name: 'Cod'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'
+  TURTLE:
+    enable: true
+    name: 'Turtle'
+    speed: 1.0
+    damage: 2.0
+    damage-interval: 0
+    hit-radius: 2.5
+    percent: 50
+    stop-time: 60
+    stop-blocks: 20
+    death-message: '%PLAYER% was killed by a %NAME%'

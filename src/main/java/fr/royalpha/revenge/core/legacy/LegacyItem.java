@@ -1,0 +1,41 @@
+package fr.royalpha.revenge.core.legacy;
+
+import fr.royalpha.revenge.core.RevengePlugin;
+import fr.royalpha.revenge.core.handler.MinecraftVersion;
+import org.bukkit.DyeColor;
+import org.bukkit.inventory.ItemStack;
+
+public class LegacyItem {
+
+    private LegacyMaterial mat;
+    private DyeColor color;
+    private int amount;
+    private short data;
+
+    public LegacyItem(LegacyMaterial mat, int amount, short data) {
+        this(mat, null, amount, data);
+    }
+
+    public LegacyItem(LegacyMaterial mat, int amount, DyeColor color) {
+        this(mat, color, amount, (short) color.ordinal());
+    }
+
+    public LegacyItem(LegacyMaterial mat, DyeColor color) {
+        this(mat, color, 1, (short) color.ordinal());
+    }
+
+    public LegacyItem(LegacyMaterial mat, DyeColor color, int amount, short data) {
+        this.mat = mat;
+        this.color = color;
+        this.amount = amount;
+        this.data = data;
+    }
+
+    public ItemStack getItemStack() {
+        if (RevengePlugin.getVersionManager().getVersion().newerThan(MinecraftVersion.v1_12_R1)) {
+            return new ItemStack(color == null ? mat.getMaterial() : mat.getColoredMaterial(color), amount);
+        } else {
+            return new ItemStack(mat.getMaterial(), amount, data);
+        }
+    }
+}
