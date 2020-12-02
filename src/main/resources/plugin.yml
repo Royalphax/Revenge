@@ -1,9 +1,9 @@
 name: UltimateRevenge
-version: 7.6.0
+version: 7.6.1
 api-version: 1.13
 author: Royalpha
 main: fr.royalpha.revenge.core.RevengePlugin
-website: https://therenceforot.fr
+website: https://www.paypal.com/paypalme/roytreo28
 commands:
   revenge:
     description: Revenge main command
